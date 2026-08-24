@@ -5,7 +5,7 @@ import { validateLoginUser, validRegisterUser } from "../validators/auth.validat
 import { googleLogin, login, register } from "../controllers/auth.controller.js";
 
 import passport from "passport";
-
+import { config } from "../config/config.js";
 const router = Router();
 
 router.post("/register", validRegisterUser, register);
@@ -23,6 +23,7 @@ router.get(
   "/google/callback",
   passport.authenticate("google", {
     session: false,
+    failureRedirect:config.NODE_ENV == "Development" ? "http://localhost:5174/login" : "/login"
   }),googleLogin
 );
 
