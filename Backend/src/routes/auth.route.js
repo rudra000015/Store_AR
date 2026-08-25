@@ -2,10 +2,11 @@ import { Router } from "express";
 
 import { validateLoginUser, validRegisterUser } from "../validators/auth.validator.js";
 
-import { googleLogin, login, register } from "../controllers/auth.controller.js";
+import { getme, googleLogin, login, register } from "../controllers/auth.controller.js";
 
 import passport from "passport";
 import { config } from "../config/config.js";
+import { authenticateUser } from "../middlewares/auth.middleware.js";
 const router = Router();
 
 router.post("/register", validRegisterUser, register);
@@ -26,5 +27,10 @@ router.get(
     failureRedirect:config.NODE_ENV == "Development" ? "http://localhost:5174/login" : "/login"
   }),googleLogin
 );
+
+
+
+
+router.get("/me",authenticateUser,getme)
 
 export default router;

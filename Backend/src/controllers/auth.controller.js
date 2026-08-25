@@ -125,3 +125,20 @@ res.redirect("http://localhost:5174/")
 
 
 }
+
+
+export const getme = async (req,res)=>{
+    const user = req.user;
+
+    res.status(200).json({
+        msg:"user fetched successfully",
+        success:true,
+        user:{
+            id :user._id,
+            email:user.email,
+            fullname:user.fullname,
+            contact:user.contact,
+            role:user.role
+        }
+    })
+}
