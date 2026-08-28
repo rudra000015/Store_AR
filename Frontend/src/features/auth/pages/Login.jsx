@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router'
 import boutiqueBg from '../../../app/assets/boutique-register-bg.png'
-import { login } from '../services/auth.api'
+import { useAuth } from '../Hook/useAuth'
 
 const inputClass =
   'mt-2 h-11 w-full rounded-lg border border-white/15 bg-black/35 px-4 text-sm text-stone-50 outline-none transition placeholder:text-stone-400 focus:border-[#d8b15f] focus:bg-black/45 focus:ring-2 focus:ring-[#d8b15f]/30 sm:h-12'
@@ -53,6 +53,7 @@ function TextInput({ id, label, ...props }) {
 
 function Login() {
   const navigate = useNavigate()
+  const { handleLogin } = useAuth()
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -75,10 +76,10 @@ function Login() {
     setMessage('')
 
     try {
-      const data = await login(formData)
+      const user = await handleLogin(formData)
       setMessage('Login successful')
       setTimeout(() => {
-        navigate('/')
+        navigate(user?.role === 'Seller' ? '/seller' : '/buyer')
       }, 500)
     } catch (error) {
       const errMsg =

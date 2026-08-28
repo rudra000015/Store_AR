@@ -93,9 +93,10 @@ function ViewProduct() {
                 ) : products.length > 0 ? (
                     <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                         {products.map((product) => (
-                            <article
+                            <Link
                                 key={product._id}
-                                className="overflow-hidden rounded-lg border border-stone-200 bg-white shadow-sm"
+                                to={`/seller/product/${product._id}`}
+                                className="overflow-hidden rounded-lg border border-stone-200 bg-white shadow-sm transition hover:-translate-y-1 hover:border-[#d8b15f]/70 hover:shadow-lg"
                             >
                                 <ProductImage product={product} />
                                 <div className="p-4">
@@ -109,8 +110,11 @@ function ViewProduct() {
                                     <p className="mt-3 line-clamp-3 text-sm leading-6 text-stone-500">
                                         {product.description}
                                     </p>
+                                    <div className="mt-5 inline-flex h-10 w-full items-center justify-center rounded-lg border border-stone-950 bg-stone-950 px-4 text-xs font-bold uppercase tracking-[0.18em] text-white transition hover:bg-stone-800">
+                                        View Details
+                                    </div>
                                 </div>
-                            </article>
+                            </Link>
                         ))}
                     </div>
                 ) : (

@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import boutiqueBg from '../../../app/assets/boutique-register-bg.png'
 import { Link, useNavigate } from 'react-router'
+import { useAuth } from '../Hook/useAuth'
 
 const inputClass =
     'mt-2 h-11 w-full rounded-lg border border-white/15 bg-black/35 px-4 text-sm text-stone-50 outline-none transition placeholder:text-stone-400 focus:border-[#d8b15f] focus:bg-black/45 focus:ring-2 focus:ring-[#d8b15f]/30 sm:h-12'
@@ -52,6 +53,7 @@ function TextInput({ id, label, ...props }) {
 
 function Register() {
     const navigate = useNavigate()
+    const { handleRegister } = useAuth()
     const [formData, setFormData] = useState({
         fullname: '',
         email: '',
@@ -78,21 +80,16 @@ function Register() {
         setMessage('')
 
         try {
-            const response = await fetch('http://localhost:3000/api/auth/register', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(formData),
-            })
-            const data = await response.json()
-
-            if (!response.ok) {
-                throw new Error(data.msg || data.errors?.[0]?.msg || 'Registration failed')
-            }
-
+            const user = await handleRegister(formData)
             setMessage('Registration successful')
-            navigate("/")
+            navigate(user?.role === 'Seller' ? '/seller' : '/buyer')
         } catch (error) {
-            setMessage(error.message)
+            const errorMessage =
+                error.response?.data?.msg ||
+                error.response?.data?.errors?.[0]?.msg ||
+                error.message ||
+                'Registration failed'
+            setMessage(errorMessage)
         } finally {
             setIsSubmitting(false)
         }
@@ -254,12 +251,12 @@ function Register() {
 
                         <p className="mt-6 text-center text-sm text-stone-300">
                             Already have an account?{' '}
-                            <a
-                                href="/login"
+                            <Link
+                                to="/login"
                                 className="font-semibold text-[#d8b15f] transition hover:text-[#f0cf7c] focus:outline-none focus:ring-2 focus:ring-[#d8b15f]/50"
                             >
                                 Login
-                            </a>
+                            </Link>
                         </p>
                     </section>
                 </div>

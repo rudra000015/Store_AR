@@ -22,6 +22,7 @@ export const useAuth = () => {
     })
 
     dispatch(setUser(data.user))
+    return data.user
   }
 
   async function handleLogin({ email, password }) {
@@ -31,6 +32,7 @@ export const useAuth = () => {
     })
 
     dispatch(setUser(data.user))
+    return data.user
   }
 
   const handlegetme = useCallback(async function handlegetme() {
