@@ -37,8 +37,11 @@ function buildVariantFormData(variantData) {
     payload.append("attributes", JSON.stringify(attributes))
     payload.append("stock", variantData.stock || "0")
     payload.append("priceAmount", variantData.priceAmount)
-    payload.append("priceCurrency", variantData.priceCurrency)
-    (variantData.images || []).forEach((image) => payload.append("images", image))
+    payload.append("priceCurrency", variantData.priceCurrency || "INR")
+    
+    if (variantData.images && variantData.images.length > 0) {
+        variantData.images.forEach((image) => payload.append("images", image))
+    }
 
     return payload
 }

@@ -1,5 +1,5 @@
 import mongoose from "mongoose"
-import priceSchema from "./price.model"
+import priceSchema from "./price.model.js"
 
 
 const cartSchema = new mongoose.Schema({
@@ -10,14 +10,14 @@ const cartSchema = new mongoose.Schema({
     },
     items: [
         {
-            products: {
+            product: {
                 type: mongoose.Types.ObjectId,
                 ref: 'product',
                 required: true
             },
             variant: {
                 type: mongoose.Types.ObjectId,
-                ref: 'variant'
+                ref: 'product.variants'
             },
             quantity: {
                 type: Number,
@@ -38,8 +38,7 @@ const cartModel = mongoose.model('cart', cartSchema)
 
 
 
-
-
+export default cartModel;
 
 
 

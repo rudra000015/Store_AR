@@ -2,7 +2,7 @@ import { Router } from "express";
 
 import { validateLoginUser, validRegisterUser } from "../validators/auth.validator.js";
 
-import { getme, googleLogin, login, register } from "../controllers/auth.controller.js";
+import { getme, googleLogin, login, register, logout } from "../controllers/auth.controller.js";
 
 import passport from "passport";
 import { config } from "../config/config.js";
@@ -12,6 +12,9 @@ const router = Router();
 router.post("/register", validRegisterUser, register);
 
 router.post("/login", validateLoginUser, login);
+
+router.post("/logout", logout);
+router.get("/logout", logout);
 
 router.get(
   "/google",
@@ -34,3 +37,4 @@ router.get(
 router.get("/me",authenticateUser,getme)
 
 export default router;
+

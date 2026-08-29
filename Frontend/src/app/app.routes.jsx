@@ -1,5 +1,4 @@
 import { createBrowserRouter } from 'react-router'
-
 import Register from '../features/auth/pages/Register'
 import Login from '../features/auth/pages/Login'
 import CreateProduct from '../features/products/pages/createProduct'
@@ -34,7 +33,11 @@ export const routes = createBrowserRouter([
 
   {
     path: '/product/:id',
-    element: <ProductDetail />,
+    element: (
+      <Protected role='Buyer'>
+        <ProductDetail />
+      </Protected>
+    ),
   },
 
   {
@@ -50,7 +53,6 @@ export const routes = createBrowserRouter([
   {
     path: '/seller',
     element: <Protected role='Seller' />,
-
     children: [
       {
         index: true,
@@ -60,7 +62,6 @@ export const routes = createBrowserRouter([
         path: 'createproduct',
         element: <CreateProduct />,
       },
-
       {
         path: 'viewproduct',
         element: <ViewProduct />,
@@ -72,4 +73,6 @@ export const routes = createBrowserRouter([
     ],
   },
 ])
+
+
 

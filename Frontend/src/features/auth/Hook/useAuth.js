@@ -1,6 +1,6 @@
 import { useCallback } from "react"
 import { setLoading, setUser } from "../state/auth.slice"
-import { register, login, getme } from "../services/auth.api"
+import { register, login, getme, logout } from "../services/auth.api"
 import { useDispatch } from "react-redux"
 
 export const useAuth = () => {
@@ -35,6 +35,16 @@ export const useAuth = () => {
     return data.user
   }
 
+  async function handleLogout() {
+    try {
+      await logout()
+    } catch (err) {
+      console.error(err)
+    } finally {
+      dispatch(setUser(null))
+    }
+  }
+
   const handlegetme = useCallback(async function handlegetme() {
     try {
       dispatch(setLoading(true))
@@ -44,6 +54,7 @@ export const useAuth = () => {
       dispatch(setUser(data.user))
     } catch (error) {
       console.log(error)
+      dispatch(setUser(null))
     } finally {
       dispatch(setLoading(false))
     }
@@ -52,6 +63,8 @@ export const useAuth = () => {
   return {
     handleRegister,
     handleLogin,
+    handleLogout,
     handlegetme
   }
 }
+

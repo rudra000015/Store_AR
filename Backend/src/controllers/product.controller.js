@@ -111,7 +111,12 @@ export async function addProductVariant(req, res) {
         const files = req.files || [];
         const productId = req.params.productId;
         const { priceAmount, priceCurrency, stock } = req.body;
-        const attributes = JSON.parse(req.body.attributes || "{}");
+        let attributes = {};
+        try {
+            attributes = typeof req.body.attributes === "string" ? JSON.parse(req.body.attributes || "{}") : (req.body.attributes || {});
+        } catch {
+            attributes = {};
+        }
 
         const product = await productModel.findOne({
             _id: productId,

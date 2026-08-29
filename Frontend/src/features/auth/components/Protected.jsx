@@ -6,7 +6,13 @@ function Protected({ children, role }) {
   const loading = useSelector((state) => state.auth.loading)
 
   if (loading) {
-    return <div>Loading...</div>
+    return (
+      <main className="flex min-h-screen items-center justify-center bg-[#0a0c10] text-stone-100">
+        <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#d8b15f]">
+          Loading THE A&R STORE...
+        </p>
+      </main>
+    )
   }
 
   if (!user) {
@@ -21,3 +27,4 @@ function Protected({ children, role }) {
 }
 
 export default Protected
+

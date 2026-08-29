@@ -7,9 +7,9 @@ function RoleRedirect() {
 
   if (loading) {
     return (
-      <main className="flex min-h-screen items-center justify-center bg-stone-950 text-stone-100">
-        <p className="text-sm font-semibold uppercase tracking-[0.24em] text-[#d8b15f]">
-          Loading dashboard...
+      <main className="flex min-h-screen items-center justify-center bg-[#0a0c10] text-stone-100">
+        <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#d8b15f]">
+          Loading THE A&R STORE...
         </p>
       </main>
     )
@@ -23,3 +23,4 @@ function RoleRedirect() {
 }
 
 export default RoleRedirect
+

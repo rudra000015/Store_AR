@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react"
-import { Link, useParams } from "react-router"
+import { Link, useNavigate, useParams } from "react-router"
 import { useProduct } from "../../products/Hook/useProduct"
+import { useAuth } from "../Hook/useAuth"
 
 const currencyOptions = ["INR", "USD", "EUR", "GBY", "JPY"]
 
@@ -26,15 +27,15 @@ function attributesToEntries(attributes) {
 
 function SellerProductDetail() {
   const { id } = useParams()
-  const {
-    handlegetproductbyId,
-    handlecreateproductvariant,
-  } = useProduct()
+  const navigate = useNavigate()
+  const { handleLogout } = useAuth()
+  const { handlegetproductbyId, handlecreateproductvariant } = useProduct()
   const [product, setProduct] = useState(null)
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
   const [message, setMessage] = useState("")
   const [error, setError] = useState("")
+  const [isLoggingOut, setIsLoggingOut] = useState(false)
   const [formData, setFormData] = useState({
     color: "",
     size: "",
@@ -44,6 +45,19 @@ function SellerProductDetail() {
     priceCurrency: "INR",
   })
   const [images, setImages] = useState([])
+
+  const onLogout = async () => {
+    try {
+      setIsLoggingOut(true)
+      await handleLogout()
+      navigate("/login")
+    } catch (err) {
+      console.error("Logout failed:", err)
+    } finally {
+      setIsLoggingOut(false)
+    }
+  }
+
 
   useEffect(() => {
     async function loadProduct() {
@@ -108,7 +122,7 @@ function SellerProductDetail() {
       })
       setImages([])
       event.target.reset()
-      setMessage("Variant created successfully.")
+      setMessage("Variant created and added to ledger successfully.")
     } catch (err) {
       const errorMessage =
         err.response?.data?.message ||
@@ -120,56 +134,103 @@ function SellerProductDetail() {
       setSaving(false)
     }
   }
-  return (
-    <main className="min-h-screen bg-stone-100 text-stone-950">
-      <div className="border-b border-stone-200 bg-white">
-        <div className="mx-auto flex w-full max-w-7xl flex-col gap-4 px-4 py-5 sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-8">
-          <div>
-            <p className="text-xs font-bold uppercase tracking-[0.26em] text-[#a98235]">
-              Seller Studio
-            </p>
-            <h1 className="mt-2 font-serif text-3xl text-stone-950 sm:text-4xl">
-              Product Details
-            </h1>
-          </div>
-          <Link
-            to="/seller/viewproduct"
-            className="inline-flex h-11 items-center justify-center rounded-lg border border-stone-950 px-5 text-sm font-bold text-stone-950 transition hover:bg-stone-950 hover:text-white"
-          >
-            Back to Products
-          </Link>
-        </div>
-      </div>
 
-      <section className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+  const inputStyle =
+    "mt-1.5 h-10 w-full rounded-xl border border-stone-800 bg-[#0d0e14] px-3 text-xs text-stone-100 placeholder:text-stone-600 outline-none transition focus:border-[#d8b15f] focus:ring-1 focus:ring-[#d8b15f]/40"
+
+  return (
+    <main className="min-h-screen bg-[#0a0c10] text-stone-100 pb-16">
+      {/* Seller Top Navbar */}
+      <header className="border-b border-stone-800/80 bg-[#0f1118]/95 sticky top-0 z-40 backdrop-blur-md">
+        <div className="mx-auto flex h-18 w-full max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center gap-8">
+            <Link to="/seller" className="flex items-center gap-2">
+              <span className="font-brand text-lg font-bold tracking-[0.2em] text-[#f0cf7c]">
+                THE A&R STORE
+              </span>
+              <span className="rounded-md border border-[#d8b15f]/30 bg-[#d8b15f]/10 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-[#d8b15f]">
+                Studio
+              </span>
+            </Link>
+
+            <nav className="hidden md:flex items-center gap-6 text-xs font-semibold uppercase tracking-[0.16em] text-stone-400">
+              <Link to="/seller" className="hover:text-stone-200 transition">
+                Dashboard
+              </Link>
+              <Link to="/seller/viewproduct" className="text-[#f0cf7c] transition">
+                Product Vault
+              </Link>
+              <Link to="/seller/createproduct" className="hover:text-stone-200 transition">
+                Add Product
+              </Link>
+              <Link to="/buyer" className="hover:text-stone-200 transition">
+                Storefront
+              </Link>
+            </nav>
+          </div>
+
+          <div className="flex items-center gap-3">
+            <Link
+              to="/seller/viewproduct"
+              className="inline-flex h-9 items-center rounded-xl border border-stone-700 bg-[#161922] px-4 text-xs font-semibold text-stone-200 hover:border-[#d8b15f]/50 hover:text-[#f0cf7c] transition"
+            >
+              ← Back to Vault
+            </Link>
+
+            <button
+              type="button"
+              onClick={onLogout}
+              disabled={isLoggingOut}
+              className="inline-flex h-9 items-center gap-1.5 rounded-xl border border-stone-700/80 bg-[#161822] px-3 text-[11px] font-semibold text-stone-300 transition hover:border-red-500/50 hover:bg-red-500/10 hover:text-red-300 disabled:opacity-50"
+              title="Log out"
+            >
+              <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                <polyline points="16 17 21 12 16 7" />
+                <line x1="21" y1="12" x2="9" y2="12" />
+              </svg>
+              <span className="hidden sm:inline">{isLoggingOut ? "..." : "Logout"}</span>
+            </button>
+          </div>
+        </div>
+      </header>
+
+      {/* Main Content Area */}
+      <section className="mx-auto w-full max-w-7xl px-4 pt-8 sm:px-6 lg:px-8 space-y-6">
         {loading ? (
-          <div className="rounded-lg border border-stone-200 bg-white p-8 text-center text-sm text-stone-500">
-            Loading product details...
+          <div className="py-20 text-center text-xs text-stone-500">
+            Loading variant ledger...
           </div>
         ) : error && !product ? (
-          <div className="rounded-lg border border-red-200 bg-white p-8 text-center shadow-sm">
-            <h2 className="font-serif text-3xl text-stone-950">
-              Product unavailable
-            </h2>
-            <p className="mt-3 text-sm leading-6 text-red-700">{error}</p>
+          <div className="rounded-2xl border border-rose-500/30 bg-rose-500/10 p-10 text-center">
+            <h2 className="font-serif text-2xl text-white">Product not available</h2>
+            <p className="mt-2 text-xs text-rose-400">{error}</p>
+            <Link
+              to="/seller/viewproduct"
+              className="mt-6 inline-flex h-10 items-center justify-center rounded-xl bg-[#d8b15f] px-6 text-xs font-bold uppercase tracking-wider text-black"
+            >
+              Back to Product Vault
+            </Link>
           </div>
         ) : product ? (
           <div className="space-y-6">
+            {/* Notifications */}
             {(message || error) && (
               <div
-                className={`rounded-lg border px-4 py-3 text-sm font-medium ${
+                className={`rounded-xl px-4 py-3 text-xs font-semibold ${
                   error
-                    ? "border-red-200 bg-red-50 text-red-700"
-                    : "border-green-200 bg-green-50 text-green-700"
+                    ? "border border-rose-500/30 bg-rose-500/10 text-rose-400"
+                    : "border border-emerald-500/30 bg-emerald-500/10 text-emerald-400"
                 }`}
               >
                 {error || message}
               </div>
             )}
 
-            <div className="grid gap-6 lg:grid-cols-[0.9fr_1.1fr]">
-              <div className="overflow-hidden rounded-lg border border-stone-200 bg-white shadow-sm">
-                <div className="aspect-[4/5] bg-stone-100">
+            {/* Product Overview Card */}
+            <div className="rounded-2xl border border-stone-800/90 bg-[#12141c] p-6 shadow-xl">
+              <div className="grid gap-6 md:grid-cols-[140px_1fr] items-center">
+                <div className="aspect-[4/5] max-h-44 overflow-hidden rounded-xl bg-stone-900 border border-stone-800">
                   {product.images?.[0]?.url ? (
                     <img
                       src={product.images[0].url}
@@ -177,109 +238,125 @@ function SellerProductDetail() {
                       className="h-full w-full object-cover"
                     />
                   ) : (
-                    <div className="flex h-full items-center justify-center px-6 text-center text-sm text-stone-500">
-                      No product image
+                    <div className="flex h-full w-full items-center justify-center text-xs text-stone-600">
+                      No Image
                     </div>
                   )}
                 </div>
-              </div>
 
-              <div className="rounded-lg border border-stone-200 bg-white p-6 shadow-sm lg:p-8">
-                <p className="text-xs font-bold uppercase tracking-[0.26em] text-[#a98235]">
-                  Main Product
-                </p>
-                <h2 className="mt-3 font-serif text-4xl leading-tight sm:text-5xl">
-                  {product.title}
-                </h2>
-                <p className="mt-4 text-2xl font-black text-[#8a6424]">
-                  {formatPrice(product.price)}
-                </p>
-                <p className="mt-5 max-w-2xl text-sm leading-7 text-stone-600">
-                  {product.description}
-                </p>
-
-                <div className="mt-7 grid gap-3 sm:grid-cols-3">
-                  <div className="rounded-lg bg-stone-100 p-4">
-                    <p className="text-xs font-bold uppercase tracking-[0.18em] text-stone-500">
-                      Variants
-                    </p>
-                    <p className="mt-2 text-3xl font-black">
-                      {product.variants?.length || 0}
+                <div className="flex flex-col justify-between gap-4">
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <span className="font-brand text-[10px] font-bold uppercase tracking-[0.2em] text-[#d8b15f]">
+                        Active Listing
+                      </span>
+                      <span className="rounded-full bg-emerald-500/15 px-2 py-0.5 text-[9px] font-bold text-emerald-400">
+                        Live in Store
+                      </span>
+                    </div>
+                    <h2 className="mt-1 font-serif text-2xl sm:text-3xl font-medium text-white">
+                      {product.title}
+                    </h2>
+                    <p className="mt-1 text-xs text-stone-400 line-clamp-2">
+                      {product.description}
                     </p>
                   </div>
-                  <div className="rounded-lg bg-stone-100 p-4">
-                    <p className="text-xs font-bold uppercase tracking-[0.18em] text-stone-500">
-                      Total Stock
-                    </p>
-                    <p className="mt-2 text-3xl font-black">{totalStock}</p>
-                  </div>
-                  <div className="rounded-lg bg-stone-100 p-4">
-                    <p className="text-xs font-bold uppercase tracking-[0.18em] text-stone-500">
-                      Images
-                    </p>
-                    <p className="mt-2 text-3xl font-black">
-                      {product.images?.length || 0}
-                    </p>
+
+                  <div className="flex flex-wrap items-center gap-6 border-t border-stone-800/80 pt-4">
+                    <div>
+                      <span className="text-[10px] uppercase tracking-wider text-stone-500 block">
+                        Base Price
+                      </span>
+                      <span className="text-base font-bold text-[#f0cf7c]">
+                        {formatPrice(product.price)}
+                      </span>
+                    </div>
+                    <div>
+                      <span className="text-[10px] uppercase tracking-wider text-stone-500 block">
+                        Total Stock
+                      </span>
+                      <span className="text-base font-bold text-white">
+                        {totalStock} units
+                      </span>
+                    </div>
+                    <div>
+                      <span className="text-[10px] uppercase tracking-wider text-stone-500 block">
+                        Variants Attached
+                      </span>
+                      <span className="text-base font-bold text-white">
+                        {product.variants?.length || 0}
+                      </span>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
 
-            <div className="grid gap-6 lg:grid-cols-[0.85fr_1.15fr]">
+            {/* Split: Create Variant (Left) + Variant Ledger (Right) */}
+            <div className="grid gap-6 lg:grid-cols-[1fr_1.4fr]">
+              {/* Variant Creation Form */}
               <form
                 onSubmit={handleCreateVariant}
-                className="rounded-lg border border-stone-200 bg-white p-6 shadow-sm"
+                className="rounded-2xl border border-stone-800/90 bg-[#12141c] p-6 shadow-xl space-y-5 h-fit"
               >
-                <p className="text-xs font-bold uppercase tracking-[0.26em] text-[#a98235]">
-                  Create Variant
-                </p>
-                <h3 className="mt-2 font-serif text-3xl">New option</h3>
+                <div className="border-b border-stone-800 pb-3">
+                  <span className="font-brand text-[10px] font-bold uppercase tracking-[0.2em] text-[#d8b15f]">
+                    SKU Builder
+                  </span>
+                  <h3 className="font-serif text-xl font-medium text-white">
+                    + Add Variant Option
+                  </h3>
+                </div>
 
-                <div className="mt-6 grid gap-4 sm:grid-cols-2">
-                  <label className="text-sm font-semibold text-stone-700">
+                <div className="grid gap-3.5 sm:grid-cols-2">
+                  <label className="text-[11px] font-bold uppercase tracking-wider text-stone-300">
                     Color
                     <input
                       name="color"
                       value={formData.color}
                       onChange={handleInputChange}
-                      className="mt-2 h-11 w-full rounded-lg border border-stone-200 px-3 text-sm outline-none focus:border-stone-950"
-                      placeholder="Black"
+                      className={inputStyle}
+                      placeholder="e.g. Vintage Charcoal"
                     />
                   </label>
-                  <label className="text-sm font-semibold text-stone-700">
+
+                  <label className="text-[11px] font-bold uppercase tracking-wider text-stone-300">
                     Size
                     <input
                       name="size"
                       value={formData.size}
                       onChange={handleInputChange}
-                      className="mt-2 h-11 w-full rounded-lg border border-stone-200 px-3 text-sm outline-none focus:border-stone-950"
-                      placeholder="M"
+                      className={inputStyle}
+                      placeholder="e.g. M, L, XL, Oversized"
                     />
                   </label>
-                  <label className="text-sm font-semibold text-stone-700">
-                    Material
+
+                  <label className="text-[11px] font-bold uppercase tracking-wider text-stone-300">
+                    Material / Fabric
                     <input
                       name="material"
                       value={formData.material}
                       onChange={handleInputChange}
-                      className="mt-2 h-11 w-full rounded-lg border border-stone-200 px-3 text-sm outline-none focus:border-stone-950"
-                      placeholder="Cotton"
+                      className={inputStyle}
+                      placeholder="e.g. 280 GSM French Terry"
                     />
                   </label>
-                  <label className="text-sm font-semibold text-stone-700">
-                    Stock
+
+                  <label className="text-[11px] font-bold uppercase tracking-wider text-stone-300">
+                    Initial Stock
                     <input
                       type="number"
                       min="0"
                       name="stock"
                       value={formData.stock}
                       onChange={handleInputChange}
-                      className="mt-2 h-11 w-full rounded-lg border border-stone-200 px-3 text-sm outline-none focus:border-stone-950"
-                      placeholder="10"
+                      className={inputStyle}
+                      placeholder="e.g. 25"
                     />
                   </label>
-                  <label className="text-sm font-semibold text-stone-700">
-                    Price
+
+                  <label className="text-[11px] font-bold uppercase tracking-wider text-stone-300">
+                    Price (Amount)
                     <input
                       required
                       type="number"
@@ -287,122 +364,132 @@ function SellerProductDetail() {
                       name="priceAmount"
                       value={formData.priceAmount}
                       onChange={handleInputChange}
-                      className="mt-2 h-11 w-full rounded-lg border border-stone-200 px-3 text-sm outline-none focus:border-stone-950"
-                      placeholder="1200"
+                      className={inputStyle}
+                      placeholder="e.g. 899"
                     />
                   </label>
-                  <label className="text-sm font-semibold text-stone-700">
+
+                  <label className="text-[11px] font-bold uppercase tracking-wider text-stone-300">
                     Currency
                     <select
                       name="priceCurrency"
                       value={formData.priceCurrency}
                       onChange={handleInputChange}
-                      className="mt-2 h-11 w-full rounded-lg border border-stone-200 px-3 text-sm outline-none focus:border-stone-950"
+                      className={inputStyle}
                     >
-                      {currencyOptions.map((currency) => (
-                        <option key={currency} value={currency}>
-                          {currency}
+                      {currencyOptions.map((curr) => (
+                        <option key={curr} value={curr}>
+                          {curr}
                         </option>
                       ))}
                     </select>
                   </label>
                 </div>
 
-                <label className="mt-4 block text-sm font-semibold text-stone-700">
-                  Variant Images
+                <label className="block text-[11px] font-bold uppercase tracking-wider text-stone-300">
+                  Variant Imagery
                   <input
                     type="file"
                     multiple
                     accept="image/*"
-                    onChange={(event) => setImages(Array.from(event.target.files || []))}
-                    className="mt-2 w-full rounded-lg border border-dashed border-stone-300 bg-stone-50 px-3 py-3 text-sm"
+                    onChange={(e) => setImages(Array.from(e.target.files || []))}
+                    className="mt-1.5 w-full rounded-xl border border-dashed border-stone-700 bg-[#0d0e14] px-3 py-3 text-xs text-stone-400 file:mr-3 file:rounded-lg file:border-0 file:bg-stone-800 file:px-3 file:py-1 file:text-xs file:font-semibold file:text-stone-200 hover:border-[#d8b15f]/50 transition"
                   />
                 </label>
 
                 <button
                   type="submit"
                   disabled={saving}
-                  className="mt-6 inline-flex h-11 w-full items-center justify-center rounded-lg border border-stone-950 bg-stone-950 px-5 text-xs font-bold uppercase tracking-[0.18em] text-white transition hover:bg-stone-800 disabled:cursor-not-allowed disabled:opacity-60"
+                  className="mt-2 h-11 w-full rounded-xl bg-gradient-to-r from-[#d8b15f] via-[#e5c378] to-[#c49842] text-xs font-bold uppercase tracking-[0.2em] text-black shadow-lg shadow-[#d8b15f]/15 transition hover:opacity-95 disabled:cursor-not-allowed disabled:opacity-50"
                 >
-                  {saving ? "Saving..." : "Create Variant"}
+                  {saving ? "Registering Variant..." : "Add to Variant Ledger"}
                 </button>
               </form>
 
-              <div className="rounded-lg border border-stone-200 bg-white p-6 shadow-sm">
-                <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+              {/* Variant Ledger Table */}
+              <div className="rounded-2xl border border-stone-800/90 bg-[#12141c] p-6 shadow-xl space-y-4">
+                <div className="flex items-center justify-between border-b border-stone-800 pb-3">
                   <div>
-                    <p className="text-xs font-bold uppercase tracking-[0.26em] text-[#a98235]">
-                      Variants
-                    </p>
-                    <h3 className="mt-2 font-serif text-3xl">Variant list</h3>
+                    <span className="font-brand text-[10px] font-bold uppercase tracking-[0.2em] text-[#d8b15f]">
+                      Ledger View
+                    </span>
+                    <h3 className="font-serif text-xl font-medium text-white">
+                      Variant Ledger
+                    </h3>
                   </div>
-                  <p className="text-sm text-stone-500">
-                    {product.variants?.length || 0} variants
-                  </p>
+                  <span className="rounded-full border border-stone-700 bg-stone-900/80 px-3 py-1 text-xs font-semibold text-stone-300">
+                    {product.variants?.length || 0} Registered
+                  </span>
                 </div>
 
                 {product.variants?.length > 0 ? (
-                  <div className="mt-6 space-y-4">
+                  <div className="divide-y divide-stone-800 space-y-3 pt-2">
                     {product.variants.map((variant, index) => (
-                      <article
-                        key={variant._id}
-                        className="grid gap-4 rounded-lg border border-stone-200 p-4 sm:grid-cols-[96px_1fr]"
+                      <div
+                        key={variant._id || index}
+                        className="grid grid-cols-[72px_1fr_auto] gap-4 pt-3 items-center"
                       >
-                        <div className="h-24 w-24 overflow-hidden rounded-lg bg-stone-100">
+                        <div className="h-18 w-18 overflow-hidden rounded-xl bg-stone-900 border border-stone-800 shrink-0">
                           {variant.images?.[0]?.url ? (
                             <img
                               src={variant.images[0].url}
-                              alt={`${product.title} variant ${index + 1}`}
+                              alt={`${product.title} var ${index + 1}`}
                               className="h-full w-full object-cover"
                             />
                           ) : (
-                            <div className="flex h-full items-center justify-center px-2 text-center text-xs text-stone-400">
-                              No image
+                            <div className="flex h-full w-full items-center justify-center text-[10px] text-stone-600">
+                              No Img
                             </div>
                           )}
                         </div>
 
-                        <div>
-                          <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-                            <div>
-                              <h4 className="font-bold text-stone-950">
-                                Variant {index + 1}
-                              </h4>
-                              <p className="mt-1 text-sm font-semibold text-[#8a6424]">
-                                {formatPrice(variant.price)}
-                              </p>
-                            </div>
-                            <div className="rounded-lg bg-stone-100 px-4 py-2 text-right">
-                              <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-stone-500">
-                                Stock
-                              </p>
-                              <p className="text-lg font-black text-stone-950">
-                                {variant.stock ?? 0}
-                              </p>
-                            </div>
+                        <div className="space-y-1">
+                          <div className="flex items-center gap-2">
+                            <span className="font-bold text-xs text-white">
+                              Variant #{index + 1}
+                            </span>
+                            <span className="text-xs font-bold text-[#f0cf7c]">
+                              {formatPrice(variant.price)}
+                            </span>
                           </div>
 
-                          <div className="mt-4 flex flex-wrap gap-2">
-                            {attributesToEntries(variant.attributes).map(([key, value]) => (
-                              value ? (
+                          <div className="flex flex-wrap gap-1.5 pt-0.5">
+                            {attributesToEntries(variant.attributes).map(([key, val]) =>
+                              val ? (
                                 <span
                                   key={key}
-                                  className="rounded-full bg-stone-100 px-3 py-1 text-xs font-semibold capitalize text-stone-600"
+                                  className="rounded-md bg-stone-900 border border-stone-800 px-2 py-0.5 text-[10px] font-medium capitalize text-stone-300"
                                 >
-                                  {key}: {value}
+                                  {key}: <strong className="text-stone-100">{val}</strong>
                                 </span>
                               ) : null
-                            ))}
+                            )}
                           </div>
                         </div>
-                      </article>
+
+                        <div className="text-right">
+                          <span
+                            className={`rounded-full px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider ${
+                              Number(variant.stock || 0) > 0
+                                ? "bg-emerald-500/15 text-emerald-400"
+                                : "bg-rose-500/15 text-rose-400"
+                            }`}
+                          >
+                            {Number(variant.stock || 0) > 0
+                              ? `${variant.stock} in stock`
+                              : "Out of stock"}
+                          </span>
+                        </div>
+                      </div>
                     ))}
                   </div>
                 ) : (
-                  <div className="mt-6 rounded-lg bg-stone-100 px-4 py-10 text-center">
-                    <h4 className="font-serif text-2xl">No variants yet</h4>
-                    <p className="mt-2 text-sm text-stone-500">
-                      Create variants to track stock by size, color, material, or any option.
+                  <div className="py-14 text-center text-stone-500 space-y-2">
+                    <p className="font-serif text-lg text-stone-300">
+                      No variants registered yet
+                    </p>
+                    <p className="text-xs max-w-xs mx-auto">
+                      Use the SKU builder on the left to add sizes, colorways, and inventory counts.
                     </p>
                   </div>
                 )}

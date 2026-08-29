@@ -1,4 +1,4 @@
-import { body, params, validationResult } from "express-validator"
+import { body, param, validationResult } from "express-validator"
 
 
 
@@ -18,8 +18,8 @@ function validateRequest(req, res, next) {
 
 
 export const validateAddToCart = [
-    params("productId").isMongoId().withMessage("Invalid Product Id"),
-    params("productId").optional().isMongoId().withMessage("Invalid Variant Id"),
+    param("productId").isMongoId().withMessage("Invalid Product Id"),
+    param("variantId").isMongoId().withMessage("Invalid Variant Id"),
     body("quantity").optional().isInt({ min: 1 }).withMessage("Quantity must be atleast One"),
 validateRequest
 ]
