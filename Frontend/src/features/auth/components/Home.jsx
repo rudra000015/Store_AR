@@ -75,21 +75,11 @@ export default function Home() {
   useEffect(() => {
     if (loading) return;
 
-    // Initialize Lenis Smooth Scroll
-    const lenis = new Lenis({
-      duration: 1.4,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // Heavy cinematic ease
-      smooth: true,
-      infinite: false,
-    });
+    // Get the global Lenis instance
+    const lenis = window.lenis;
+    if (!lenis) return;
 
     lenisRef.current = lenis;
-
-    function raf(time) {
-      lenis.raf(time);
-      requestAnimationFrame(raf);
-    }
-    requestAnimationFrame(raf);
 
     // Sync Lenis with GSAP ScrollTrigger
     lenis.on("scroll", ScrollTrigger.update);

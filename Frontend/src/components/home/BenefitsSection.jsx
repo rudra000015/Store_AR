@@ -39,22 +39,22 @@ export default function BenefitsSection() {
   ];
 
   return (
-    <section className="bg-[#FBF9F4] text-[#171513] py-16 sm:py-24 px-6 sm:px-12 border-t border-[#E5DCCB] transition-colors duration-300 font-sans">
+    <section className="bg-[#FBF9F4] dark:bg-[#0D0D0D] text-[#171513] dark:text-[#FBF9F4] py-16 sm:py-24 px-6 sm:px-12 border-t border-[#E5DCCB] dark:border-[#333333] transition-colors duration-300 font-sans">
       <div className="mx-auto max-w-7xl">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {benefits.map((b, idx) => (
             <div 
               key={idx} 
-              className="space-y-4 text-left p-6 border border-[#E5DCCB] bg-[#FFFDF8] rounded-[18px] shadow-[0_10px_30px_rgba(20,17,12,0.04)]"
+              className="space-y-4 text-left p-6 border border-[#E5DCCB] dark:border-[#333333] bg-[#FFFDF8] dark:bg-[#1A1A1A] rounded-[18px] shadow-[0_10px_30px_rgba(20,17,12,0.04)] dark:shadow-none"
             >
               {/* Icon Container: Warm Cream/Gold tint background */}
-              <div className="p-3 bg-[#F7F3EB] border border-[#E5DCCB]/40 w-fit rounded-xl">
+              <div className="p-3 bg-[#F7F3EB] dark:bg-[#0D0D0D] border border-[#E5DCCB]/40 dark:border-[#333333]/40 w-fit rounded-xl">
                 {b.icon}
               </div>
-              <h3 className="font-brand text-base font-light text-[#171513] uppercase tracking-wide">
+              <h3 className="font-brand text-base font-light text-[#171513] dark:text-[#FBF9F4] uppercase tracking-wide">
                 {b.title}
               </h3>
-              <p className="text-xs text-[#716B63] leading-relaxed font-light font-sans">
+              <p className="text-xs text-[#716B63] dark:text-[#9A948B] leading-relaxed font-light font-sans">
                 {b.desc}
               </p>
             </div>

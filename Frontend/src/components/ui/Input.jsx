@@ -13,7 +13,7 @@ export default function Input({
       {label && (
         <label
           htmlFor={id}
-          className="block text-[9px] font-sans font-bold uppercase tracking-[0.2em] text-[#716B63] mb-1.5"
+          className="block text-[9px] font-sans font-bold uppercase tracking-[0.2em] text-[#716B63] dark:text-[#9A948B] mb-1.5"
         >
           {label}
         </label>
@@ -21,7 +21,7 @@ export default function Input({
       <input
         id={id}
         type={type}
-        className={`h-10 w-full rounded-lg border border-[#E5DCCB] bg-[#FFFDF8] px-3 text-[11px] text-[#171513] placeholder-[#9A948B] outline-none transition duration-200 focus:border-[#C8A96A] focus:ring-1 focus:ring-[#C8A96A] ${
+        className={`h-10 w-full rounded-lg border border-[#E5DCCB] dark:border-[#333333] bg-[#FFFDF8] dark:bg-[#0D0D0D] px-3 text-[11px] text-[#171513] dark:text-[#FBF9F4] placeholder-[#9A948B] dark:placeholder-[#716B63] outline-none transition duration-200 focus:border-[#C8A96A] focus:ring-1 focus:ring-[#C8A96A] ${
           error ? "border-[#A65D52]/50 focus:border-[#A65D52]" : ""
         } ${className}`}
         {...props}

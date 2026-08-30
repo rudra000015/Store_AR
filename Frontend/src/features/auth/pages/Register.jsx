@@ -55,9 +55,9 @@ function Register() {
   };
 
   return (
-    <main className="min-h-screen bg-[#FBF9F4] text-[#171513] flex flex-col justify-between selection:bg-[#C8A96A] selection:text-[#0D0D0D] transition-colors duration-300 font-sans">
+    <main className="min-h-screen bg-[#FBF9F4] dark:bg-[#0D0D0D] text-[#171513] dark:text-[#FBF9F4] flex flex-col justify-between selection:bg-[#C8A96A] selection:text-[#0D0D0D] transition-colors duration-300 font-sans">
       {/* Top Luxury Navbar */}
-      <header className="border-b border-[#E5DCCB] bg-[#FFFDF8]/80 backdrop-blur-md sticky top-0 z-50 px-6 py-4">
+      <header className="border-b border-[#E5DCCB] dark:border-[#333333] bg-[#FFFDF8]/80 dark:bg-[#0D0D0D]/80 backdrop-blur-md sticky top-0 z-50 px-6 py-4">
         <div className="mx-auto flex w-full max-w-7xl items-center justify-between">
           <Link to="/" className="flex items-center gap-2 group">
             <span className="font-brand text-lg font-bold tracking-[0.25em] text-[#C8A96A] hover:text-[#D8B77A] transition-colors duration-300">
@@ -70,7 +70,7 @@ function Register() {
             <button
               type="button"
               onClick={toggleTheme}
-              className="h-9 w-9 rounded-md border border-[#E5DCCB] bg-[#F7F3EB]/60 text-xs flex items-center justify-center hover:bg-[#E5DCCB] transition cursor-pointer text-[#171513]"
+              className="h-9 w-9 rounded-md border border-[#E5DCCB] dark:border-[#333333] bg-[#F7F3EB]/60 dark:bg-[#1A1A1A]/60 text-xs flex items-center justify-center hover:bg-[#E5DCCB] dark:hover:bg-[#333333] transition cursor-pointer text-[#171513] dark:text-[#FBF9F4]"
               title="Toggle theme"
             >
               {theme === "dark" ? "☀️" : "🌙"}
@@ -78,7 +78,7 @@ function Register() {
 
             <Link
               to="/login"
-              className="text-xs font-sans font-semibold tracking-wider text-[#716B63] hover:text-[#C8A96A] transition-colors duration-300"
+              className="text-xs font-sans font-semibold tracking-wider text-[#716B63] dark:text-[#9A948B] hover:text-[#C8A96A] transition-colors duration-300"
             >
               Already a member? <span className="text-[#C8A96A] font-bold underline ml-1 hover:text-[#D8B77A]">Sign In</span>
             </Link>
@@ -89,21 +89,21 @@ function Register() {
       {/* Split Body Layout */}
       <section className="mx-auto grid w-full max-w-7xl flex-1 items-center gap-12 p-6 lg:grid-cols-12 lg:p-12">
         {/* Left Side: Editorial Banner */}
-        <div className="relative hidden h-full min-h-[580px] overflow-hidden rounded-[18px] border border-[#E5DCCB] lg:block lg:col-span-6">
+        <div className="relative hidden h-full min-h-[580px] overflow-hidden rounded-[18px] border border-[#E5DCCB] dark:border-[#333333] lg:block lg:col-span-6">
           <img
             src={boutiqueBg}
             alt="Boutique Member Registration"
             className="h-full w-full object-cover brightness-[0.96] contrast-[1.02]"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#FBF9F4] via-[#FBF9F4]/40 to-transparent p-12 flex flex-col justify-end text-left">
-            <span className="font-sans text-[9px] font-bold uppercase tracking-[0.3em] text-[#886D3B] mb-2">
+          <div className="absolute inset-0 bg-gradient-to-t from-[#FBF9F4] dark:from-[#0D0D0D] via-[#FBF9F4]/40 dark:via-[#0D0D0D]/40 to-transparent p-12 flex flex-col justify-end text-left">
+            <span className="font-sans text-[9px] font-bold uppercase tracking-[0.3em] text-[#886D3B] dark:text-[#C8A96A] mb-2">
               JOIN THE MOVEMENT
             </span>
-            <h2 className="font-brand text-4xl lg:text-5xl font-light leading-tight text-[#171513] tracking-wide uppercase">
+            <h2 className="font-brand text-4xl lg:text-5xl font-light leading-tight text-[#171513] dark:text-[#FBF9F4] tracking-wide uppercase">
               Where Style <br />
               Meets Identity.
             </h2>
-            <p className="mt-4 max-w-md text-xs leading-relaxed text-[#716B63] font-sans font-light tracking-wide">
+            <p className="mt-4 max-w-md text-xs leading-relaxed text-[#716B63] dark:text-[#9A948B] font-sans font-light tracking-wide">
               Create an account to shop limited boutique drops, or register as a seller to launch your independent studio.
             </p>
           </div>
@@ -113,13 +113,13 @@ function Register() {
         <div className="lg:col-span-6 flex justify-center w-full">
           <Card className="w-full max-w-lg p-8 space-y-6 hover" hover>
             <div className="text-left">
-              <span className="font-sans text-[9px] font-bold uppercase tracking-[0.3em] text-[#886D3B]">
+              <span className="font-sans text-[9px] font-bold uppercase tracking-[0.3em] text-[#886D3B] dark:text-[#C8A96A]">
                 CREATE ACCOUNT
               </span>
-              <h1 className="mt-2 font-brand text-3xl font-light text-[#171513] tracking-wide uppercase">
+              <h1 className="mt-2 font-brand text-3xl font-light text-[#171513] dark:text-[#FBF9F4] tracking-wide uppercase">
                 Become a Member
               </h1>
-              <p className="mt-2 text-xs text-[#716B63] font-sans font-light">
+              <p className="mt-2 text-xs text-[#716B63] dark:text-[#9A948B] font-sans font-light">
                 Select your membership role and complete your registration.
               </p>
             </div>
@@ -136,8 +136,8 @@ function Register() {
                 type="button"
                 onClick={() => setFormData((p) => ({ ...p, isSeller: false }))}
                 className={`flex flex-col items-center justify-center rounded-xl border p-4 transition-all duration-300 cursor-pointer ${!formData.isSeller
-                    ? "border-[#C8A96A] bg-[#C8A96A]/5 text-[#886D3B]"
-                    : "border-[#E5DCCB] bg-[#FFFDF8] text-[#716B63] hover:border-[#C8A96A]/50"
+                    ? "border-[#C8A96A] bg-[#C8A96A]/5 text-[#C8A96A]"
+                    : "border-[#E5DCCB] dark:border-[#333333] bg-[#FFFDF8] dark:bg-[#1A1A1A] text-[#716B63] dark:text-[#9A948B] hover:border-[#C8A96A]/50"
                   }`}
               >
                 <span className="text-xs font-sans font-bold uppercase tracking-wider">Buyer</span>
@@ -148,8 +148,8 @@ function Register() {
                 type="button"
                 onClick={() => setFormData((p) => ({ ...p, isSeller: true }))}
                 className={`flex flex-col items-center justify-center rounded-xl border p-4 transition-all duration-300 cursor-pointer ${formData.isSeller
-                    ? "border-[#C8A96A] bg-[#C8A96A]/5 text-[#886D3B]"
-                    : "border-[#E5DCCB] bg-[#FFFDF8] text-[#716B63] hover:border-[#C8A96A]/50"
+                    ? "border-[#C8A96A] bg-[#C8A96A]/5 text-[#C8A96A]"
+                    : "border-[#E5DCCB] dark:border-[#333333] bg-[#FFFDF8] dark:bg-[#1A1A1A] text-[#716B63] dark:text-[#9A948B] hover:border-[#C8A96A]/50"
                   }`}
               >
                 <span className="text-xs font-sans font-bold uppercase tracking-wider">Seller Studio</span>
@@ -193,13 +193,13 @@ function Register() {
 
               <div className="relative text-left">
                 <div className="flex items-center justify-between mb-2">
-                  <label className="block text-[9px] font-sans font-bold uppercase tracking-[0.2em] text-[#716B63]">
+                  <label className="block text-[9px] font-sans font-bold uppercase tracking-[0.2em] text-[#716B63] dark:text-[#9A948B]">
                     Password
                   </label>
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="text-[9px] font-sans font-bold uppercase tracking-wider text-[#C8A96A] hover:text-[#D8B77A] transition"
+                    className="text-[9px] font-sans font-bold uppercase tracking-wider text-[#C8A96A] hover:text-[#D8B77A] transition cursor-pointer"
                   >
                     {showPassword ? "Hide" : "Show"}
                   </button>
@@ -211,7 +211,7 @@ function Register() {
                   value={formData.password}
                   onChange={handleChange}
                   placeholder="••••••••"
-                  className="h-10 w-full rounded-lg border border-[#E5DCCB] bg-[#FFFDF8] px-3 text-[11px] text-[#171513] placeholder-[#9A948B] outline-none transition duration-200 focus:border-[#C8A96A] focus:ring-1 focus:ring-[#C8A96A]"
+                  className="h-10 w-full rounded-lg border border-[#E5DCCB] dark:border-[#333333] bg-[#FFFDF8] dark:bg-[#0D0D0D] px-3 text-[11px] text-[#171513] dark:text-[#FBF9F4] placeholder-[#9A948B] dark:placeholder-[#716B63] outline-none transition duration-200 focus:border-[#C8A96A] focus:ring-1 focus:ring-[#C8A96A]"
                 />
               </div>
 
@@ -226,15 +226,15 @@ function Register() {
 
             <div className="space-y-5 pt-2">
               <div className="relative flex items-center justify-center">
-                <div className="w-full border-t border-[#E5DCCB]" />
-                <span className="absolute bg-[#FFFDF8] px-3 text-[9px] uppercase tracking-[0.25em] text-[#9A948B]">
+                <div className="w-full border-t border-[#E5DCCB] dark:border-[#333333]" />
+                <span className="absolute bg-[#FFFDF8] dark:bg-[#1A1A1A] px-3 text-[9px] uppercase tracking-[0.25em] text-[#9A948B]">
                   Or Continue With
                 </span>
               </div>
 
               <a
                 href="http://localhost:3000/api/auth/google"
-                className="flex h-11 w-full items-center justify-center gap-3 rounded-full border border-[#E5DCCB] bg-white text-xs font-sans font-semibold text-[#171513] hover:border-[#C8A96A] hover:bg-[#FFFDF8] transition duration-200"
+                className="flex h-11 w-full items-center justify-center gap-3 rounded-full border border-[#E5DCCB] dark:border-[#333333] bg-white dark:bg-[#1A1A1A] text-xs font-sans font-semibold text-[#171513] dark:text-[#FBF9F4] hover:border-[#C8A96A] hover:bg-[#FFFDF8] dark:hover:bg-[#0D0D0D] transition duration-200"
               >
                 <svg className="h-4 w-4" viewBox="0 0 24 24">
                   <path
@@ -262,7 +262,7 @@ function Register() {
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-[#E5DCCB] bg-[#F7F3EB]/50 py-6 text-center text-[9px] font-sans font-bold tracking-wider uppercase text-[#9A948B]">
+      <footer className="border-t border-[#E5DCCB] dark:border-[#333333] bg-[#F7F3EB]/50 dark:bg-[#0D0D0D]/50 py-6 text-center text-[9px] font-sans font-bold tracking-wider uppercase text-[#9A948B] dark:text-[#716B63] transition-colors duration-300">
         © 2026 THE A&R STORE. Handcrafted with luxury standards.
       </footer>
     </main>

@@ -120,14 +120,14 @@ export default function ProductDetail() {
   const stock = selectedVariant ? Number(selectedVariant.stock || 0) : 0;
 
   return (
-    <div className="min-h-screen bg-[#FBF9F4] text-[#171513] transition-colors duration-300 py-6 sm:py-12 font-sans">
+    <div className="min-h-screen bg-[#FBF9F4] dark:bg-[#0D0D0D] text-[#171513] dark:text-[#FBF9F4] transition-colors duration-300 py-6 sm:py-12 font-sans">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         
         {/* Back Link */}
         <div className="mb-10 text-left">
           <Link 
             to="/buyer" 
-            className="text-[10px] font-sans font-bold uppercase tracking-[0.25em] text-[#886D3B] hover:text-[#C8A96A] hover:underline"
+            className="text-[10px] font-sans font-bold uppercase tracking-[0.25em] text-[#886D3B] dark:text-[#C8A96A] hover:text-[#C8A96A] hover:underline"
           >
             ← Return to Collection
           </Link>
@@ -138,7 +138,7 @@ export default function ProductDetail() {
           
           {/* Left Column: Sticky Gallery */}
           <div className="lg:col-span-6 lg:sticky lg:top-28 self-start space-y-4">
-            <div className="aspect-[3/4] w-full overflow-hidden bg-[#F2EFE8] border border-[#E5DCCB] rounded-2xl">
+            <div className="aspect-[3/4] w-full overflow-hidden bg-[#F2EFE8] dark:bg-[#1A1A1A] border border-[#E5DCCB] dark:border-[#333333] rounded-2xl">
               {activeImage ? (
                 <img 
                   src={activeImage} 
@@ -146,7 +146,7 @@ export default function ProductDetail() {
                   className="h-full w-full object-cover" 
                 />
               ) : (
-                <div className="flex h-full w-full items-center justify-center text-xs text-[#716B63] uppercase tracking-widest font-bold">
+                <div className="flex h-full w-full items-center justify-center text-xs text-[#716B63] dark:text-[#9A948B] uppercase tracking-widest font-bold">
                   No Preview Image
                 </div>
               )}
@@ -158,7 +158,7 @@ export default function ProductDetail() {
                 {currentImages.map((img, idx) => (
                   <div 
                     key={idx} 
-                    className="aspect-[3/4] overflow-hidden border border-[#E5DCCB] bg-[#F2EFE8] cursor-pointer rounded-lg hover:border-[#C8A96A] transition"
+                    className="aspect-[3/4] overflow-hidden border border-[#E5DCCB] dark:border-[#333333] bg-[#F2EFE8] dark:bg-[#1A1A1A] cursor-pointer rounded-lg hover:border-[#C8A96A] transition"
                   >
                     <img src={img.url} alt="" className="h-full w-full object-cover" />
                   </div>
@@ -173,7 +173,7 @@ export default function ProductDetail() {
             {/* Metadata, Title, Rating */}
             <div className="space-y-4">
               <div className="flex items-center justify-between">
-                <span className="text-[10px] font-sans font-bold uppercase tracking-[0.3em] text-[#886D3B]">
+                <span className="text-[10px] font-sans font-bold uppercase tracking-[0.3em] text-[#886D3B] dark:text-[#C8A96A]">
                   Studio Drop Selection
                 </span>
                 
@@ -184,12 +184,12 @@ export default function ProductDetail() {
                 </div>
               </div>
 
-              <h1 className="font-brand text-3xl sm:text-4xl font-light text-[#171513] tracking-wide leading-tight uppercase">
+              <h1 className="font-brand text-3xl sm:text-4xl font-light text-[#171513] dark:text-[#FBF9F4] tracking-wide leading-tight uppercase">
                 {product.title}
               </h1>
 
-              <div className="flex items-baseline justify-between border-b border-[#E5DCCB] pb-4">
-                <span className="text-2xl font-sans font-semibold text-[#171513]">
+              <div className="flex items-baseline justify-between border-b border-[#E5DCCB] dark:border-[#333333] pb-4">
+                <span className="text-2xl font-sans font-semibold text-[#171513] dark:text-[#FBF9F4]">
                   {formatPrice(price)}
                 </span>
                 <span className="text-[9px] font-sans font-bold uppercase tracking-wider text-[#66745A]">
@@ -200,15 +200,15 @@ export default function ProductDetail() {
 
             {/* Product Details description */}
             <div className="space-y-3">
-              <h3 className="text-[9px] font-sans font-bold uppercase tracking-[0.25em] text-[#716B63]">
+              <h3 className="text-[9px] font-sans font-bold uppercase tracking-[0.25em] text-[#716B63] dark:text-[#C8A96A]">
                 Details & Description
               </h3>
-              <p className="text-xs text-[#716B63] leading-relaxed font-light tracking-wide font-sans">
+              <p className="text-xs text-[#716B63] dark:text-[#9A948B] leading-relaxed font-light tracking-wide font-sans">
                 {product.description || "Designed as part of our exclusive drop edition. High-end textiles, fine stitching details, and contemporary cuts. Fits naturally into premium luxury aesthetics."}
               </p>
             </div>
 
-            <hr className="border-[#E5DCCB]" />
+            <hr className="border-[#E5DCCB] dark:border-[#333333]" />
 
             {/* Feedback Banners using Luxury Colors */}
             {successMsg && (
@@ -246,20 +246,20 @@ export default function ProductDetail() {
                         }}
                         className={`flex flex-col p-4 border text-left rounded-xl transition duration-200 cursor-pointer ${
                           isActive 
-                            ? "border-[#C8A96A] bg-[#FFFDF8] ring-1 ring-[#C8A96A] shadow-sm" 
-                            : "border-[#E5DCCB] bg-[#F7F3EB] hover:border-[#C8A96A]/60"
+                            ? "border-[#C8A96A] bg-[#FFFDF8] dark:bg-[#1A1A1A] ring-1 ring-[#C8A96A] shadow-sm" 
+                            : "border-[#E5DCCB] dark:border-[#333333] bg-[#F7F3EB] dark:bg-[#1A1A1A]/40 hover:border-[#C8A96A]/60"
                         }`}
                       >
-                        <span className="text-xs font-sans font-bold text-[#171513]">
+                        <span className="text-xs font-sans font-bold text-[#171513] dark:text-[#FBF9F4]">
                           {v.color || "Standard"} / {v.size || "OS"}
                         </span>
                         {v.material && (
-                          <span className="text-[9px] text-[#716B63] uppercase mt-0.5 tracking-wider">
+                          <span className="text-[9px] text-[#716B63] dark:text-[#9A948B] uppercase mt-0.5 tracking-wider">
                             Material: {v.material}
                           </span>
                         )}
-                        <div className="mt-3 flex items-center justify-between">
-                          <span className="text-[10px] font-sans font-semibold text-[#886D3B]">
+                        <div className="mt-3 flex items-center justify-between w-full">
+                          <span className="text-[10px] font-sans font-semibold text-[#886D3B] dark:text-[#C8A96A]">
                             {formatPrice(v.price)}
                           </span>
                           <span className={`text-[9px] font-sans font-semibold uppercase tracking-wider ${v.stock > 0 ? "text-[#9A948B]" : "text-[#A65D52]"}`}>
@@ -279,26 +279,26 @@ export default function ProductDetail() {
               {/* Quantity controller */}
               {selectedVariant && selectedVariant.stock > 0 && (
                 <div className="flex items-center gap-4">
-                  <span className="text-[9px] font-sans font-bold uppercase tracking-[0.2em] text-[#716B63]">
+                  <span className="text-[9px] font-sans font-bold uppercase tracking-[0.2em] text-[#716B63] dark:text-[#9A948B]">
                     Quantity:
                   </span>
-                  <div className="flex items-center border border-[#E5DCCB] bg-white rounded-lg overflow-hidden">
+                  <div className="flex items-center border border-[#E5DCCB] dark:border-[#333333] bg-white dark:bg-[#1A1A1A] rounded-lg overflow-hidden">
                     <button
                       type="button"
                       onClick={() => setQuantity(q => Math.max(1, q - 1))}
                       disabled={quantity <= 1 || actionLoading}
-                      className="h-8 w-8 text-xs font-bold text-[#716B63] hover:bg-stone-50 disabled:opacity-30 cursor-pointer"
+                      className="h-8 w-8 text-xs font-bold text-[#716B63] dark:text-[#9A948B] hover:bg-[#F7F3EB] dark:hover:bg-[#0D0D0D] disabled:opacity-30 cursor-pointer"
                     >
                       —
                     </button>
-                    <span className="w-8 text-center text-xs font-bold text-[#171513]">
+                    <span className="w-8 text-center text-xs font-bold text-[#171513] dark:text-[#FBF9F4]">
                       {quantity}
                     </span>
                     <button
                       type="button"
                       onClick={() => setQuantity(q => Math.min(stock, q + 1))}
                       disabled={quantity >= stock || actionLoading}
-                      className="h-8 w-8 text-xs font-bold text-[#716B63] hover:bg-stone-50 disabled:opacity-30 cursor-pointer"
+                      className="h-8 w-8 text-xs font-bold text-[#716B63] dark:text-[#9A948B] hover:bg-[#F7F3EB] dark:hover:bg-[#0D0D0D] disabled:opacity-30 cursor-pointer"
                     >
                       +
                     </button>
@@ -312,7 +312,7 @@ export default function ProductDetail() {
                   type="button"
                   onClick={() => handleAddSelectionToCart(false)}
                   disabled={actionLoading || (selectedVariant && selectedVariant.stock === 0)}
-                  className="h-12 text-[11px] font-sans font-bold uppercase tracking-[0.12em] bg-transparent border border-[#886D3B] text-[#171513] hover:bg-[#C8A96A] hover:text-[#0D0D0D] hover:border-transparent rounded-full"
+                  className="h-12 text-[11px] font-sans font-bold uppercase tracking-[0.12em] bg-transparent border border-[#886D3B] text-[#171513] dark:text-[#FBF9F4] hover:bg-[#C8A96A] hover:text-[#0D0D0D] dark:hover:text-[#0D0D0D] hover:border-transparent rounded-full"
                 >
                   {actionLoading ? "Processing..." : "Add to Vault"}
                 </Button>

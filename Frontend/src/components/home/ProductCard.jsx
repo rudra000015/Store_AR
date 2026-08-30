@@ -29,11 +29,11 @@ export default function ProductCard({ product }) {
   };
 
   return (
-    <div className="group border border-[#E5DCCB] bg-[#FFFDF8] p-4 flex flex-col justify-between hover:shadow-[0_10px_30px_rgba(20,17,12,0.1)] hover:-translate-y-1 transition-all duration-300 rounded-[18px] relative shadow-[0_10px_30px_rgba(20,17,12,0.06)] font-sans h-full">
+    <div className="group border border-[#E5DCCB] dark:border-[#333333] bg-[#FFFDF8] dark:bg-[#1A1A1A] p-4 flex flex-col justify-between hover:shadow-[0_10px_30px_rgba(20,17,12,0.1)] hover:-translate-y-1 transition-all duration-300 rounded-[18px] relative shadow-[0_10px_30px_rgba(20,17,12,0.06)] dark:shadow-none font-sans h-full">
       <div>
         {/* Image Container (#F2EFE8 bg, rounded-xl) */}
         <Link to={`/buyer/product/${product._id}`}>
-          <div className="aspect-[3/4] w-full overflow-hidden bg-[#F2EFE8] border border-[#E5DCCB]/30 relative rounded-xl">
+          <div className="aspect-[3/4] w-full overflow-hidden bg-[#F2EFE8] dark:bg-[#0D0D0D] border border-[#E5DCCB]/30 dark:border-[#333333]/30 relative rounded-xl">
             {defaultImageUrl ? (
               <img
                 src={defaultImageUrl}
@@ -41,7 +41,7 @@ export default function ProductCard({ product }) {
                 className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.04]"
               />
             ) : (
-              <div className="flex h-full w-full items-center justify-center text-[9px] text-[#716B63] uppercase tracking-widest font-bold">
+              <div className="flex h-full w-full items-center justify-center text-[9px] text-[#716B63] dark:text-[#9A948B] uppercase tracking-widest font-bold">
                 No Image
               </div>
             )}
@@ -49,7 +49,7 @@ export default function ProductCard({ product }) {
             {/* Wishlist Heart Icon overlay */}
             <button
               onClick={handleWishlistClick}
-              className="absolute top-3 right-3 h-8 w-8 flex items-center justify-center rounded-full bg-[#FBF9F4] text-[#171513] hover:text-[#C8A96A] transition cursor-pointer shadow-sm border border-[#E5DCCB]/40"
+              className="absolute top-3 right-3 h-8 w-8 flex items-center justify-center rounded-full bg-[#FBF9F4] dark:bg-[#0D0D0D] text-[#171513] dark:text-[#FBF9F4] hover:text-[#C8A96A] transition cursor-pointer shadow-sm border border-[#E5DCCB]/40 dark:border-[#333333]/45"
             >
               <svg 
                 className={`w-3.5 h-3.5 transition ${isWishlisted ? "fill-rose-500 stroke-rose-500 scale-110" : "fill-transparent stroke-current"}`} 
@@ -71,18 +71,18 @@ export default function ProductCard({ product }) {
         {/* Info */}
         <div className="mt-4 space-y-1.5 text-left">
           <Link to={`/buyer/product/${product._id}`}>
-            <h3 className="font-serif text-[13px] font-semibold text-[#171513] hover:text-[#C8A96A] transition line-clamp-1">
+            <h3 className="font-serif text-[13px] font-semibold text-[#171513] dark:text-[#FBF9F4] hover:text-[#C8A96A] transition line-clamp-1">
               {product.title}
             </h3>
           </Link>
-          <p className="text-[10px] text-[#716B63] line-clamp-2 leading-relaxed font-light">
+          <p className="text-[10px] text-[#716B63] dark:text-[#9A948B] line-clamp-2 leading-relaxed font-light">
             {product.description || "No description provided."}
           </p>
         </div>
       </div>
 
-      <div className="mt-5 flex items-center justify-between border-t border-[#E5DCCB]/60 pt-4">
-        <span className="text-xs font-semibold text-[#171513] font-sans">
+      <div className="mt-5 flex items-center justify-between border-t border-[#E5DCCB]/60 dark:border-[#333333]/60 pt-4">
+        <span className="text-xs font-semibold text-[#171513] dark:text-[#FBF9F4] font-sans">
           {formatPrice(defaultPrice)}
         </span>
         <Link

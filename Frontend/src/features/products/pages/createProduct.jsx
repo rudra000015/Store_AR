@@ -10,7 +10,7 @@ import Card from "../../../components/ui/Card";
 function Field({ id, label, children }) {
   return (
     <div className="font-sans">
-      <label htmlFor={id} className="block text-[9px] font-sans font-bold uppercase tracking-[0.2em] text-[#716B63] mb-1.5">
+      <label htmlFor={id} className="block text-[9px] font-sans font-bold uppercase tracking-[0.2em] text-[#716B63] dark:text-[#9A948B] mb-1.5">
         {label}
       </label>
       {children}
@@ -108,9 +108,9 @@ function CreateProduct() {
   };
 
   return (
-    <main className="min-h-screen bg-[#FBF9F4] text-[#171513] pb-16 selection:bg-[#C8A96A] selection:text-[#0D0D0D] transition-colors duration-300 font-sans">
+    <main className="min-h-screen bg-[#FBF9F4] dark:bg-[#0D0D0D] text-[#171513] dark:text-[#FBF9F4] pb-16 selection:bg-[#C8A96A] selection:text-[#0D0D0D] transition-colors duration-300 font-sans">
       {/* Seller Top Navbar */}
-      <header className="border-b border-[#E5DCCB] bg-[#FFFDF8]/95 sticky top-0 z-40 backdrop-blur-md">
+      <header className="border-b border-[#E5DCCB] dark:border-[#333333] bg-[#FFFDF8]/95 dark:bg-[#0D0D0D]/95 sticky top-0 z-40 backdrop-blur-md">
         <div className="mx-auto flex h-16 w-full max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-8">
             <Link to="/seller" className="flex items-center gap-2 group">
@@ -122,17 +122,17 @@ function CreateProduct() {
               </span>
             </Link>
 
-            <nav className="hidden md:flex items-center gap-6 text-[10px] font-sans font-bold uppercase tracking-[0.2em] text-[#716B63]">
-              <Link to="/seller" className="hover:text-[#C8A96A] transition">
+            <nav className="hidden md:flex items-center gap-6 text-[10px] font-sans font-bold uppercase tracking-[0.2em] text-[#716B63] dark:text-[#9A948B]">
+              <Link to="/seller" className="hover:text-[#C8A96A] dark:hover:text-[#C8A96A] transition text-[#716B63] dark:text-[#9A948B]">
                 Dashboard
               </Link>
-              <Link to="/seller/viewproduct" className="hover:text-[#C8A96A] transition">
+              <Link to="/seller/viewproduct" className="hover:text-[#C8A96A] dark:hover:text-[#C8A96A] transition text-[#716B63] dark:text-[#9A948B]">
                 Product Vault
               </Link>
               <Link to="/seller/createproduct" className="text-[#C8A96A] transition">
                 Add Product
               </Link>
-              <Link to="/buyer" className="hover:text-[#C8A96A] transition">
+              <Link to="/buyer" className="hover:text-[#C8A96A] dark:hover:text-[#C8A96A] transition text-[#716B63] dark:text-[#9A948B]">
                 Storefront
               </Link>
             </nav>
@@ -143,7 +143,7 @@ function CreateProduct() {
             <button
               type="button"
               onClick={toggleTheme}
-              className="h-9 w-9 rounded-md border border-[#E5DCCB] text-xs flex items-center justify-center hover:bg-[#F7F3EB] transition cursor-pointer text-[#171513]"
+              className="h-9 w-9 rounded-md border border-[#E5DCCB] dark:border-[#333333] text-xs flex items-center justify-center hover:bg-[#F7F3EB] dark:hover:bg-[#1A1A1A] transition cursor-pointer text-[#171513] dark:text-[#FBF9F4]"
               title="Toggle theme"
             >
               {theme === "dark" ? "☀️" : "🌙"}
@@ -151,7 +151,7 @@ function CreateProduct() {
 
             <Link
               to="/seller/viewproduct"
-              className="text-[9px] font-sans font-bold uppercase tracking-wider text-[#716B63] hover:text-[#C8A96A] transition mr-2"
+              className="text-[9px] font-sans font-bold uppercase tracking-wider text-[#716B63] dark:text-[#9A948B] hover:text-[#C8A96A] dark:hover:text-[#C8A96A] transition mr-2"
             >
               ← Back to Vault
             </Link>
@@ -159,7 +159,7 @@ function CreateProduct() {
             <button
               onClick={onLogout}
               disabled={isLoggingOut}
-              className="h-9 px-4 bg-transparent border border-[#886D3B] text-[#171513] hover:bg-[#C8A96A] hover:text-[#0D0D0D] hover:border-transparent text-[9px] font-sans font-bold uppercase tracking-widest transition rounded-full flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
+              className="h-9 px-4 bg-transparent border border-[#886D3B] text-[#171513] dark:text-[#FBF9F4] hover:bg-[#C8A96A] hover:text-[#0D0D0D] hover:border-transparent text-[9px] font-sans font-bold uppercase tracking-widest transition rounded-full flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
             >
               <svg className="h-3 w-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                 <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
@@ -177,16 +177,16 @@ function CreateProduct() {
         {/* Form Container */}
         <form
           onSubmit={handleSubmit}
-          className="rounded-[18px] border border-[#E5DCCB] bg-[#FFFDF8] p-6 sm:p-8 shadow-[0_10px_30px_rgba(20,17,12,0.03)] space-y-6"
+          className="rounded-[18px] border border-[#E5DCCB] dark:border-[#333333] bg-[#FFFDF8] dark:bg-[#1A1A1A] p-6 sm:p-8 shadow-[0_10px_30px_rgba(20,17,12,0.03)] dark:shadow-none space-y-6"
         >
-          <div className="border-b border-[#E5DCCB]/60 pb-5">
-            <span className="font-sans text-[9px] font-bold uppercase tracking-[0.3em] text-[#886D3B]">
+          <div className="border-b border-[#E5DCCB]/60 dark:border-[#333333]/60 pb-5">
+            <span className="font-sans text-[9px] font-bold uppercase tracking-[0.3em] text-[#886D3B] dark:text-[#C8A96A]">
               PUBLISH NEW DROP
             </span>
-            <h1 className="mt-2 font-brand text-3xl text-[#171513] font-light tracking-wide uppercase">
+            <h1 className="mt-2 font-brand text-3xl text-[#171513] dark:text-[#FBF9F4] font-light tracking-wide uppercase">
               Add a Product
             </h1>
-            <p className="mt-2 text-xs text-[#716B63] font-sans font-light">
+            <p className="mt-2 text-xs text-[#716B63] dark:text-[#9A948B] font-sans font-light">
               Publish a base product to your vault. You can attach sizes & colors in the Variant Ledger next.
             </p>
           </div>
@@ -223,7 +223,7 @@ function CreateProduct() {
                   name="priceCurrency"
                   value={formData.priceCurrency}
                   onChange={handleChange}
-                  className="h-10 w-full rounded-lg border border-[#E5DCCB] bg-[#FFFDF8] px-4 text-xs text-[#171513] placeholder-[#9A948B] outline-none transition duration-200 focus:border-[#C8A96A] focus:ring-1 focus:ring-[#C8A96A] cursor-pointer"
+                  className="h-10 w-full rounded-lg border border-[#E5DCCB] dark:border-[#333333] bg-[#FFFDF8] dark:bg-[#0D0D0D] px-4 text-xs text-[#171513] dark:text-[#FBF9F4] placeholder-[#9A948B] dark:placeholder-[#716B63] outline-none transition duration-200 focus:border-[#C8A96A] focus:ring-1 focus:ring-[#C8A96A] cursor-pointer"
                   required
                 >
                   <option value="INR">INR (₹)</option>
@@ -241,7 +241,7 @@ function CreateProduct() {
                 name="description"
                 value={formData.description}
                 onChange={handleChange}
-                className="mt-2 min-h-32 w-full resize-none rounded-lg border border-[#E5DCCB] bg-[#FFFDF8] px-4 py-3 text-xs leading-relaxed text-[#171513] placeholder-[#9A948B] outline-none transition duration-200 focus:border-[#C8A96A] focus:ring-1 focus:ring-[#C8A96A]"
+                className="mt-2 min-h-32 w-full resize-none rounded-lg border border-[#E5DCCB] dark:border-[#333333] bg-[#FFFDF8] dark:bg-[#0D0D0D] px-4 py-3 text-xs leading-relaxed text-[#171513] dark:text-[#FBF9F4] placeholder-[#9A948B] dark:placeholder-[#716B63] outline-none transition duration-200 focus:border-[#C8A96A] focus:ring-1 focus:ring-[#C8A96A]"
                 placeholder="Describe tailoring details, fabric GSM, fit, silhouette, and care guidelines..."
                 required
               />
@@ -250,7 +250,7 @@ function CreateProduct() {
             <Field id="images" label="Product Imagery (Up to 7)">
               <label
                 htmlFor="images"
-                className="mt-2 flex min-h-36 cursor-pointer flex-col items-center justify-center rounded-xl border border-dashed border-[#E5DCCB] bg-[#F7F3EB]/30 px-4 py-6 text-center transition hover:border-[#C8A96A]/60 hover:bg-[#F7F3EB]/60"
+                className="mt-2 flex min-h-36 cursor-pointer flex-col items-center justify-center rounded-xl border border-dashed border-[#E5DCCB] dark:border-[#333333] bg-[#F7F3EB]/30 dark:bg-[#1A1A1A]/30 px-4 py-6 text-center transition hover:border-[#C8A96A]/60 hover:bg-[#F7F3EB]/60 dark:hover:bg-[#1A1A1A]/60"
               >
                 <div className="h-10 w-10 rounded-full border border-[#C8A96A]/20 bg-[#C8A96A]/10 flex items-center justify-center text-[#C8A96A] mb-2">
                   <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -259,12 +259,12 @@ function CreateProduct() {
                     <line x1="12" y1="3" x2="12" y2="15" />
                   </svg>
                 </div>
-                <span className="text-xs font-sans font-bold text-[#171513] uppercase tracking-wider">
+                <span className="text-xs font-sans font-bold text-[#171513] dark:text-[#FBF9F4] uppercase tracking-wider">
                   {images.length > 0
                     ? `${images.length} image(s) selected`
                     : "Drag images here or browse files"}
                 </span>
-                <span className="mt-1 text-[10px] uppercase tracking-wider text-[#9A948B]">
+                <span className="mt-1 text-[10px] uppercase tracking-wider text-[#9A948B] dark:text-[#716B63]">
                   High-resolution PNG, JPG, or WEBP. Max 7 images.
                 </span>
               </label>
@@ -291,7 +291,7 @@ function CreateProduct() {
             </div>
           )}
 
-          <div className="pt-4 border-t border-[#E5DCCB]/60 flex items-center justify-end gap-4">
+          <div className="pt-4 border-t border-[#E5DCCB]/60 dark:border-[#333333]/60 flex items-center justify-end gap-4">
             <button
               type="button"
               onClick={() => {
@@ -304,7 +304,7 @@ function CreateProduct() {
                 setImages([]);
                 setMessage("");
               }}
-              className="h-11 px-6 border border-[#886D3B] text-[#171513] hover:bg-[#C8A96A] hover:text-[#0D0D0D] hover:border-transparent text-[10px] font-sans font-bold uppercase tracking-widest transition rounded-full cursor-pointer"
+              className="h-11 px-6 border border-[#886D3B] text-[#171513] dark:text-[#FBF9F4] hover:bg-[#C8A96A] hover:text-[#0D0D0D] hover:border-transparent text-[10px] font-sans font-bold uppercase tracking-widest transition rounded-full cursor-pointer"
             >
               Reset
             </button>
@@ -321,18 +321,18 @@ function CreateProduct() {
 
         {/* Live Preview Column */}
         <aside className="h-fit">
-          <Card className="p-6 border border-[#E5DCCB] bg-[#FFFDF8] space-y-5 hover" hover>
+          <Card className="p-6 border border-[#E5DCCB] dark:border-[#333333] bg-[#FFFDF8] dark:bg-[#1A1A1A] space-y-5 hover" hover>
             <div>
-              <span className="font-sans text-[9px] font-bold uppercase tracking-[0.25em] text-[#886D3B]">
+              <span className="font-sans text-[9px] font-bold uppercase tracking-[0.25em] text-[#886D3B] dark:text-[#C8A96A]">
                 LIVE STOREFRONT PREVIEW
               </span>
-              <h2 className="font-brand text-2xl text-[#171513] font-light mt-1 tracking-wide uppercase">
+              <h2 className="font-brand text-2xl text-[#171513] dark:text-[#FBF9F4] font-light mt-1 tracking-wide uppercase">
                 Store Listing Card
               </h2>
             </div>
 
-            <div className="overflow-hidden rounded-2xl border border-[#E5DCCB] bg-[#FFFDF8] shadow-sm">
-              <div className="aspect-[4/5] bg-[#F2EFE8] overflow-hidden relative">
+            <div className="overflow-hidden rounded-2xl border border-[#E5DCCB] dark:border-[#333333] bg-[#FFFDF8] dark:bg-[#1A1A1A] shadow-sm dark:shadow-none">
+              <div className="aspect-[4/5] bg-[#F2EFE8] dark:bg-[#0D0D0D] overflow-hidden relative">
                 {previews[0] ? (
                   <img
                     src={previews[0].url}
@@ -340,27 +340,27 @@ function CreateProduct() {
                     className="h-full w-full object-cover"
                   />
                 ) : (
-                  <div className="flex h-full items-center justify-center px-6 text-center text-[9px] text-[#716B63] uppercase tracking-widest font-bold bg-[#F2EFE8]">
+                  <div className="flex h-full items-center justify-center px-6 text-center text-[9px] text-[#716B63] dark:text-[#9A948B] uppercase tracking-widest font-bold bg-[#F2EFE8] dark:bg-[#0D0D0D]">
                     Image preview will render here
                   </div>
                 )}
                 <div className="absolute left-3 top-3">
-                  <span className="rounded-full border border-[#E5DCCB]/40 bg-[#FFFDF8]/90 px-2.5 py-0.5 text-[8px] font-sans font-bold uppercase tracking-wider text-[#171513]">
+                  <span className="rounded-full border border-[#E5DCCB]/40 dark:border-[#333333]/40 bg-[#FFFDF8]/90 dark:bg-[#0D0D0D]/90 px-2.5 py-0.5 text-[8px] font-sans font-bold uppercase tracking-wider text-[#171513] dark:text-[#FBF9F4]">
                     Preview
                   </span>
                 </div>
               </div>
 
               <div className="p-5 space-y-2">
-                <h3 className="font-brand text-[15px] font-semibold text-[#171513] tracking-wide line-clamp-1">
+                <h3 className="font-brand text-[15px] font-semibold text-[#171513] dark:text-[#FBF9F4] tracking-wide line-clamp-1">
                   {formData.title || "Your Product Title"}
                 </h3>
-                <p className="text-sm font-sans font-bold text-[#886D3B]">
+                <p className="text-sm font-sans font-bold text-[#886D3B] dark:text-[#C8A96A]">
                   {formData.priceAmount
                     ? `${formData.priceCurrency} ${formData.priceAmount}`
                     : "INR 0.00"}
                 </p>
-                <p className="line-clamp-3 text-xs leading-relaxed text-[#716B63] font-sans font-light">
+                <p className="line-clamp-3 text-xs leading-relaxed text-[#716B63] dark:text-[#9A948B] font-sans font-light">
                   {formData.description ||
                     "Your product description and silhouette notes will render here."}
                 </p>
@@ -374,7 +374,7 @@ function CreateProduct() {
                     key={image.url}
                     src={image.url}
                     alt={image.name}
-                    className="aspect-square rounded-xl border border-[#E5DCCB] object-cover"
+                    className="aspect-square rounded-xl border border-[#E5DCCB] dark:border-[#333333] object-cover bg-[#F2EFE8] dark:bg-[#0D0D0D]"
                   />
                 ))}
               </div>

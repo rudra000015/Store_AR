@@ -4,6 +4,7 @@ import { useAuth } from "../../features/auth/Hook/useAuth";
 import { useCart } from "../../features/cart/hook/useCart";
 import { useTheme } from "../../hooks/useTheme";
 import Footer from "./Footer";
+import Lenis from "lenis";
 
 // Import the boutique panorama image for the global inner page backdrop
 import panoramaImg from "../../app/assets/boutique-panorama.png";
@@ -15,6 +16,34 @@ export default function AppLayout() {
   const { handleLogout, user } = useAuth();
   const { cartItems, handleGetCart } = useCart();
   const { theme, toggleTheme } = useTheme();
+
+  // Initialize global Lenis smooth scrolling
+  if (typeof window !== "undefined" && !window.lenis) {
+    window.lenis = new Lenis({
+      duration: 1.4,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // Heavy cinematic ease
+      smooth: true,
+      infinite: false,
+    });
+
+    const raf = (time) => {
+      if (window.lenis) {
+        window.lenis.raf(time);
+        requestAnimationFrame(raf);
+      }
+    };
+    requestAnimationFrame(raf);
+  }
+
+  // Cleanup Lenis on layout unmount
+  useEffect(() => {
+    return () => {
+      if (window.lenis) {
+        window.lenis.destroy();
+        window.lenis = null;
+      }
+    };
+  }, []);
   
   const [searchQuery, setSearchQuery] = useState(searchParams.get("search") || "");
   const [isLoggingOut, setIsLoggingOut] = useState(false);
@@ -73,11 +102,11 @@ export default function AppLayout() {
 
   // Dynamic header sizing classes based on scroll state
   const headerClasses = isScrolled
-    ? "w-[85%] h-12 border border-[#E5DCCB]/30 bg-[#0D0D0D]/95 shadow-2xl"
-    : "w-[94%] max-w-6xl h-16 border border-[#E5DCCB]/25 bg-[#0D0D0D]/90 shadow-lg";
+    ? "w-[90%] max-w-6xl h-13 rounded-2xl border border-[#E5DCCB]/60 dark:border-[#333333] bg-white/95 dark:bg-[#0D0D0D]/95 shadow-xl text-[#171513] dark:text-[#FBF9F4]"
+    : "w-full h-16 rounded-none border-b border-[#E5DCCB] dark:border-[#333333] bg-white dark:bg-[#0D0D0D] shadow-none text-[#171513] dark:text-[#FBF9F4]";
 
   return (
-    <div className="min-h-screen bg-[#FBF9F4] text-[#171513] transition-colors duration-300 flex flex-col font-sans overflow-x-hidden">
+    <div className="min-h-screen bg-[#FBF9F4] dark:bg-[#0D0D0D] text-[#171513] dark:text-[#FBF9F4] transition-colors duration-300 flex flex-col font-sans overflow-x-hidden">
       
       {/* 1. Global Fixed Backdrop for Inner Pages (e.g. Cart, Product Details) */}
       {!isHome && (
@@ -85,7 +114,7 @@ export default function AppLayout() {
           <img
             src={panoramaImg}
             alt="Boutique Gallery"
-            className="w-full h-full object-cover select-none pointer-events-none opacity-40 scale-105"
+            className="w-full h-full object-cover select-none pointer-events-none opacity-40 dark:opacity-20 scale-105"
           />
           {/* Subtle dark overlay for text readability */}
           <div className="absolute inset-0 bg-gradient-to-t from-[#0D0D0D] via-transparent to-[#0D0D0D]/75 z-1"></div>
@@ -94,8 +123,8 @@ export default function AppLayout() {
 
       {/* 2. Fixed centered wrapper for floating header (resolves the top white bar issue) */}
       {/* Set pointer-events-none on wrapper so scroll/click pass to main content underneath */}
-      <div className="fixed top-0 left-0 right-0 z-50 pointer-events-none flex justify-center px-4 pt-4 transition-all duration-300">
-        <header className={`transition-all duration-300 ease-out pointer-events-auto flex items-center justify-between rounded-2xl text-[#F7F3EB] backdrop-blur-md ${headerClasses}`}>
+      <div className={`fixed left-0 right-0 z-50 pointer-events-none flex justify-center transition-all duration-500 ease-in-out ${isScrolled ? "top-4 px-4" : "top-0 px-0"}`}>
+        <header className={`transition-all duration-500 ease-in-out pointer-events-auto flex items-center justify-between backdrop-blur-md ${headerClasses}`}>
           <div className="w-full px-6 md:px-8">
             <div className="flex items-center justify-between gap-4">
               
@@ -122,11 +151,11 @@ export default function AppLayout() {
                     placeholder="Search boutique drops..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-full pl-4 pr-10 text-[10px] bg-[#1A1A1A] border border-[#E5DCCB]/15 text-[#F7F3EB] placeholder-[#8B867E] focus:border-[#C8A96A] outline-none transition duration-205 rounded-lg h-8"
+                    className="w-full pl-4 pr-10 text-[10px] bg-white dark:bg-[#1A1A1A] border border-[#E5DCCB] dark:border-[#333333] text-[#171513] dark:text-[#FBF9F4] placeholder-[#716B63] dark:placeholder-[#9A948B] focus:border-[#C8A96A] outline-none transition duration-205 rounded-lg h-8"
                   />
                   <button
                     type="submit"
-                    className="absolute right-0 top-0 h-full w-10 flex items-center justify-center transition cursor-pointer text-[#F7F3EB]/60 hover:text-[#C8A96A]"
+                    className="absolute right-0 top-0 h-full w-10 flex items-center justify-center transition cursor-pointer text-[#716B63] dark:text-[#9A948B] hover:text-[#C8A96A]"
                   >
                     <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -141,7 +170,7 @@ export default function AppLayout() {
                 {/* Theme Toggle */}
                 <button
                   onClick={toggleTheme}
-                  className="p-1.5 transition cursor-pointer text-[#F7F3EB]/80 hover:text-[#C8A96A]"
+                  className="p-1.5 transition cursor-pointer text-[#716B63] dark:text-[#9A948B] hover:text-[#C8A96A]"
                   title="Toggle Theme"
                 >
                   {theme === "dark" ? (
@@ -158,7 +187,7 @@ export default function AppLayout() {
                 {/* Wishlist */}
                 <Link
                   to="/buyer"
-                  className="p-1.5 relative transition text-[#F7F3EB]/80 hover:text-[#C8A96A]"
+                  className="p-1.5 relative transition text-[#716B63] dark:text-[#9A948B] hover:text-[#C8A96A]"
                   title="Wishlist"
                   onClick={(e) => {
                     e.preventDefault();
@@ -174,7 +203,7 @@ export default function AppLayout() {
                 {/* Cart */}
                 <Link
                   to="/buyer/cart"
-                  className="p-1.5 relative transition text-[#F7F3EB]/80 hover:text-[#C8A96A]"
+                  className="p-1.5 relative transition text-[#716B63] dark:text-[#9A948B] hover:text-[#C8A96A]"
                   title="Your Cart"
                 >
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -188,14 +217,14 @@ export default function AppLayout() {
                 </Link>
 
                 {/* User / Logout */}
-                <div className="flex items-center gap-3 border-l border-[#E5DCCB]/15 pl-4">
-                  <span className="text-[8px] font-brand font-bold uppercase tracking-wider text-[#F7F3EB]/70">
+                <div className="flex items-center gap-3 border-l border-[#E5DCCB]/15 dark:border-[#333333]/30 pl-4">
+                  <span className="text-[8px] font-brand font-bold uppercase tracking-wider text-[#716B63] dark:text-[#9A948B]">
                     {user?.fullname?.split(" ")[0] || "Guest"}
                   </span>
                   <button
                     onClick={onLogout}
                     disabled={isLoggingOut}
-                    className="px-3 py-1.5 text-[8px] font-brand font-bold uppercase tracking-widest transition cursor-pointer disabled:opacity-50 bg-[#C8A96A] text-[#0D0D0D] hover:bg-[#D8B77A] rounded-md"
+                    className="px-3 py-1.5 text-[9px] font-sans font-bold uppercase tracking-widest transition cursor-pointer disabled:opacity-50 bg-[#171513] dark:bg-[#FBF9F4] text-white dark:text-[#0D0D0D] hover:bg-[#C8A96A] dark:hover:bg-[#D8B77A] hover:text-white dark:hover:text-[#0D0D0D] rounded-md"
                   >
                     {isLoggingOut ? "..." : "Logout"}
                   </button>
@@ -204,11 +233,11 @@ export default function AppLayout() {
 
               {/* Mobile Actions */}
               <div className="flex items-center gap-3 md:hidden">
-                <button onClick={toggleTheme} className="p-2 text-[#F7F3EB]">
+                <button onClick={toggleTheme} className="p-2 text-[#716B63] dark:text-[#9A948B]">
                   {theme === "dark" ? "☀️" : "🌙"}
                 </button>
 
-                <Link to="/buyer/cart" className="p-2 relative text-[#F7F3EB]">
+                <Link to="/buyer/cart" className="p-2 relative text-[#716B63] dark:text-[#9A948B]">
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
                   </svg>
@@ -221,7 +250,7 @@ export default function AppLayout() {
 
                 <button
                   onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                  className="p-2 text-[#F7F3EB]"
+                  className="p-2 text-[#716B63] dark:text-[#9A948B]"
                 >
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     {mobileMenuOpen ? (
@@ -238,14 +267,14 @@ export default function AppLayout() {
 
           {/* Mobile Dropdown Menu */}
           {mobileMenuOpen && (
-            <div className="absolute top-16 left-0 right-0 border border-[#E5DCCB]/20 rounded-xl bg-[#0D0D0D] p-4 space-y-4 shadow-xl z-50 pointer-events-auto text-[#F7F3EB]">
+            <div className="absolute top-16 left-0 right-0 border border-[#E5DCCB]/20 dark:border-[#333333] rounded-xl bg-white dark:bg-[#0D0D0D] p-4 space-y-4 shadow-xl z-50 pointer-events-auto text-[#171513] dark:text-[#FBF9F4]">
               <form onSubmit={handleSearchSubmit} className="relative w-full">
                 <input
                   type="text"
                   placeholder="Search items..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full h-8 pl-4 pr-10 border border-[#E5DCCB]/15 bg-[#1A1A1A] text-[10px] text-[#F7F3EB] placeholder-[#8B867E] focus:border-[#C8A96A] outline-none rounded-md"
+                  className="w-full h-8 pl-4 pr-10 border border-[#E5DCCB]/15 dark:border-[#333333] bg-[#FBF9F4] dark:bg-[#1A1A1A] text-[10px] text-[#171513] dark:text-[#FBF9F4] placeholder-[#8B867E] focus:border-[#C8A96A] outline-none rounded-md"
                 />
                 <button type="submit" className="absolute right-0 top-0 h-8 w-10 flex items-center justify-center">
                   <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -254,16 +283,16 @@ export default function AppLayout() {
                 </button>
               </form>
 
-              <div className="flex flex-col gap-2 pt-2">
+              <div className="flex flex-col gap-2 pt-2 text-left">
                 <Link 
                   to="/buyer" 
-                  className="py-2 text-[#F7F3EB]/80 text-[10px] font-brand font-semibold uppercase tracking-wider"
+                  className="py-2 text-[#171513]/80 dark:text-[#FBF9F4]/80 text-[10px] font-brand font-semibold uppercase tracking-wider"
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   Collection
                 </Link>
                 <button
-                  className="py-2 text-left text-[#F7F3EB]/80 text-[10px] font-brand font-semibold uppercase tracking-wider"
+                  className="py-2 text-left text-[#171513]/80 dark:text-[#FBF9F4]/80 text-[10px] font-brand font-semibold uppercase tracking-wider"
                   onClick={() => {
                     setMobileMenuOpen(false);
                     alert("Wishlist feature coming soon!");
@@ -271,7 +300,7 @@ export default function AppLayout() {
                 >
                   Wishlist
                 </button>
-                <div className="border-t border-[#E5DCCB]/15 pt-4 flex items-center justify-between">
+                <div className="border-t border-[#E5DCCB]/15 dark:border-[#333333]/30 pt-4 flex items-center justify-between">
                   <span className="text-[10px] text-[#C8A96A] font-brand font-bold uppercase">
                     {user?.fullname || "Guest User"}
                   </span>
@@ -298,7 +327,7 @@ export default function AppLayout() {
         {isHome ? (
           <Outlet />
         ) : (
-          <div className="relative z-20 bg-[#FBF9F4] rounded-t-[36px] border-t border-[#E5DCCB] shadow-[0_-15px_40px_rgba(20,17,12,0.05)] px-4 sm:px-6 lg:px-8 py-10 min-h-[70vh]">
+          <div className="relative z-20 bg-[#FBF9F4] dark:bg-[#0D0D0D] rounded-t-[36px] border-t border-[#E5DCCB] dark:border-[#333333] shadow-[0_-15px_40px_rgba(20,17,12,0.05)] px-4 sm:px-6 lg:px-8 py-10 min-h-[70vh] transition-colors duration-300">
             <div className="max-w-7xl mx-auto text-left">
               <Outlet />
             </div>

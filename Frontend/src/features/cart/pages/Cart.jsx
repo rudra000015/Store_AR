@@ -80,13 +80,13 @@ export default function Cart() {
   }, 0);
 
   return (
-    <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 font-sans bg-[#FBF9F4] min-h-screen text-[#171513] text-left">
+    <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 font-sans bg-[#FBF9F4] dark:bg-[#0D0D0D] min-h-screen text-[#171513] dark:text-[#FBF9F4] text-left transition-colors duration-300">
       {/* Header */}
-      <div className="border-b border-[#E5DCCB] pb-6 mb-8">
-        <h1 className="font-brand text-3xl sm:text-4xl font-light tracking-wide uppercase">
+      <div className="border-b border-[#E5DCCB] dark:border-[#333333] pb-6 mb-8">
+        <h1 className="font-brand text-3xl sm:text-4xl font-light tracking-wide uppercase text-[#171513] dark:text-[#FBF9F4]">
           Your Shopping Vault
         </h1>
-        <p className="mt-2 text-[10px] font-sans font-bold tracking-[0.15em] text-[#716B63] uppercase">
+        <p className="mt-2 text-[10px] font-sans font-bold tracking-[0.15em] text-[#716B63] dark:text-[#9A948B] uppercase">
           {cartItems?.length || 0} exquisite pieces in your vault
         </p>
       </div>
@@ -116,10 +116,10 @@ export default function Cart() {
               return (
                 <div 
                   key={item._id || idx}
-                  className="flex flex-col sm:flex-row gap-6 p-6 border border-[#E5DCCB] bg-[#FFFDF8] rounded-2xl shadow-[0_10px_30px_rgba(20,17,12,0.03)]"
+                  className="flex flex-col sm:flex-row gap-6 p-6 border border-[#E5DCCB] dark:border-[#333333] bg-[#FFFDF8] dark:bg-[#1A1A1A] rounded-2xl shadow-[0_10px_30px_rgba(20,17,12,0.03)] dark:shadow-none"
                 >
                   {/* Image Thumbnail inside #F2EFE8 aspect-ratio */}
-                  <div className="h-32 w-24 overflow-hidden rounded-xl bg-[#F2EFE8] border border-[#E5DCCB]/30 shrink-0 mx-auto sm:mx-0">
+                  <div className="h-32 w-24 overflow-hidden rounded-xl bg-[#F2EFE8] dark:bg-[#0D0D0D] border border-[#E5DCCB]/30 dark:border-[#333333]/30 shrink-0 mx-auto sm:mx-0">
                     {imageUrl ? (
                       <img 
                         src={imageUrl} 
@@ -127,7 +127,7 @@ export default function Cart() {
                         className="h-full w-full object-cover" 
                       />
                     ) : (
-                      <div className="flex h-full w-full items-center justify-center text-[9px] text-[#716B63] uppercase tracking-widest font-bold bg-[#F2EFE8]">
+                      <div className="flex h-full w-full items-center justify-center text-[9px] text-[#716B63] dark:text-[#9A948B] uppercase tracking-widest font-bold bg-[#F2EFE8] dark:bg-[#0D0D0D]">
                         No Image
                       </div>
                     )}
@@ -138,17 +138,17 @@ export default function Cart() {
                     <div>
                       <div className="flex items-start justify-between gap-4">
                         <div>
-                          <h3 className="font-brand text-base font-semibold text-[#171513] line-clamp-2">
+                          <h3 className="font-brand text-base font-semibold text-[#171513] dark:text-[#FBF9F4] line-clamp-2">
                             {product.title}
                           </h3>
                           {variantDetails.size || variantDetails.color ? (
-                            <p className="mt-1.5 text-[9px] font-sans font-bold uppercase tracking-widest text-[#716B63]">
+                            <p className="mt-1.5 text-[9px] font-sans font-bold uppercase tracking-widest text-[#716B63] dark:text-[#9A948B]">
                               {variantDetails.color && `Color: ${variantDetails.color}`}
                               {variantDetails.size && `  |  Size: ${variantDetails.size}`}
                             </p>
                           ) : null}
                         </div>
-                        <span className="text-sm font-sans font-semibold text-[#171513] shrink-0">
+                        <span className="text-sm font-sans font-semibold text-[#171513] dark:text-[#FBF9F4] shrink-0">
                           {formatPrice(price)}
                         </span>
                       </div>
@@ -156,23 +156,23 @@ export default function Cart() {
 
                     <div className="flex items-center justify-between mt-6 flex-wrap gap-4">
                       {/* Quantity Selector */}
-                      <div className="flex items-center border border-[#E5DCCB] bg-white rounded-lg overflow-hidden">
+                      <div className="flex items-center border border-[#E5DCCB] dark:border-[#333333] bg-white dark:bg-[#0D0D0D] rounded-lg overflow-hidden">
                         <button
                           type="button"
                           onClick={() => updateQuantity(product._id, variantId, item.quantity - 1, stock)}
                           disabled={item.quantity <= 1 || actionLoading === itemKey}
-                          className="h-8 w-8 text-xs font-bold text-[#716B63] hover:bg-stone-50 disabled:opacity-30 cursor-pointer"
+                          className="h-8 w-8 text-xs font-bold text-[#716B63] dark:text-[#9A948B] hover:bg-[#F7F3EB] dark:hover:bg-[#1A1A1A] disabled:opacity-30 cursor-pointer"
                         >
                           —
                         </button>
-                        <span className="w-8 text-center text-xs font-bold text-[#171513]">
+                        <span className="w-8 text-center text-xs font-bold text-[#171513] dark:text-[#FBF9F4]">
                           {item.quantity}
                         </span>
                         <button
                           type="button"
                           onClick={() => updateQuantity(product._id, variantId, item.quantity + 1, stock)}
                           disabled={item.quantity >= stock || actionLoading === itemKey}
-                          className="h-8 w-8 text-xs font-bold text-[#716B63] hover:bg-stone-50 disabled:opacity-30 cursor-pointer"
+                          className="h-8 w-8 text-xs font-bold text-[#716B63] dark:text-[#9A948B] hover:bg-[#F7F3EB] dark:hover:bg-[#1A1A1A] disabled:opacity-30 cursor-pointer"
                         >
                           +
                         </button>
@@ -183,7 +183,7 @@ export default function Cart() {
                         type="button"
                         onClick={() => removeItem(product._id, variantId)}
                         disabled={actionLoading === `remove-${itemKey}`}
-                        className="text-[9px] font-sans font-bold uppercase tracking-widest text-[#716B63] hover:text-[#C8A96A] transition cursor-pointer disabled:opacity-50"
+                        className="text-[9px] font-sans font-bold uppercase tracking-widest text-[#716B63] dark:text-[#9A948B] hover:text-[#C8A96A] transition cursor-pointer disabled:opacity-50"
                       >
                         {actionLoading === `remove-${itemKey}` ? "Removing..." : "Remove Piece"}
                       </button>
@@ -194,17 +194,17 @@ export default function Cart() {
             })}
           </div>
 
-          {/* Cart Summary Side Panel (#F7F3EB background) */}
+          {/* Cart Summary Side Panel */}
           <div className="lg:col-span-4">
-            <div className="border border-[#E5DCCB] bg-[#F7F3EB] p-8 sticky top-28 rounded-2xl shadow-[0_10px_30px_rgba(20,17,12,0.03)]">
-              <h2 className="font-brand text-xs font-bold tracking-[0.2em] text-[#171513] border-b border-[#E5DCCB] pb-4 uppercase">
+            <div className="border border-[#E5DCCB] dark:border-[#333333] bg-[#F7F3EB] dark:bg-[#1A1A1A] p-8 sticky top-28 rounded-2xl shadow-[0_10px_30px_rgba(20,17,12,0.03)] dark:shadow-none">
+              <h2 className="font-brand text-xs font-bold tracking-[0.2em] text-[#171513] dark:text-[#FBF9F4] border-b border-[#E5DCCB] dark:border-[#333333] pb-4 uppercase">
                 Order Summary
               </h2>
 
-              <div className="mt-6 space-y-4 text-xs font-sans font-semibold text-[#716B63]">
+              <div className="mt-6 space-y-4 text-xs font-sans font-semibold text-[#716B63] dark:text-[#9A948B]">
                 <div className="flex justify-between">
                   <span>Subtotal</span>
-                  <span className="text-[#171513]">
+                  <span className="text-[#171513] dark:text-[#FBF9F4]">
                     {formatPrice({ amount: totalAmount, currency: "INR" })}
                   </span>
                 </div>
@@ -216,11 +216,11 @@ export default function Cart() {
                 </div>
                 <div className="flex justify-between">
                   <span>Estimated Taxes</span>
-                  <span className="text-[#171513]">
+                  <span className="text-[#171513] dark:text-[#FBF9F4]">
                     {formatPrice({ amount: Math.round(totalAmount * 0.05), currency: "INR" })}
                   </span>
                 </div>
-                <div className="border-t border-[#E5DCCB] pt-4 flex justify-between text-sm font-bold text-[#171513]">
+                <div className="border-t border-[#E5DCCB] dark:border-[#333333] pt-4 flex justify-between text-sm font-bold text-[#171513] dark:text-[#FBF9F4]">
                   <span>Estimated Total</span>
                   <span className="text-base font-sans font-bold text-[#C8A96A]">
                     {formatPrice({ amount: Math.round(totalAmount * 1.05), currency: "INR" })}
@@ -241,7 +241,7 @@ export default function Cart() {
 
               {/* Secure Checkout Badges */}
               <div className="mt-6 text-center">
-                <p className="text-[8px] font-sans font-bold uppercase tracking-widest text-[#9A948B]">
+                <p className="text-[8px] font-sans font-bold uppercase tracking-widest text-[#9A948B] dark:text-[#716B63]">
                   🔒 256-bit encrypted checkout & insured luxury delivery
                 </p>
               </div>
@@ -250,12 +250,12 @@ export default function Cart() {
         </div>
       ) : (
         /* Empty Cart State */
-        <div className="flex flex-col items-center justify-center py-20 text-center space-y-6 max-w-md mx-auto border border-dashed border-[#E5DCCB] bg-[#FFFDF8] p-8 rounded-2xl">
+        <div className="flex flex-col items-center justify-center py-20 text-center space-y-6 max-w-md mx-auto border border-dashed border-[#E5DCCB] dark:border-[#333333] bg-[#FFFDF8] dark:bg-[#1A1A1A] p-8 rounded-2xl">
           <div className="text-5xl">🛍️</div>
-          <h2 className="font-brand text-lg tracking-[0.25em] text-[#171513] uppercase">
+          <h2 className="font-brand text-lg tracking-[0.25em] text-[#171513] dark:text-[#FBF9F4] uppercase">
             Your Vault is Empty
           </h2>
-          <p className="text-xs text-[#716B63] leading-relaxed">
+          <p className="text-xs text-[#716B63] dark:text-[#9A948B] leading-relaxed">
             There are currently no signature boutique items selected. Visit our catalog to add products to your bag.
           </p>
           <Link

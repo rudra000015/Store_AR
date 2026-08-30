@@ -55,9 +55,9 @@ function Login() {
   };
 
   return (
-    <main className="min-h-screen bg-[#FBF9F4] text-[#171513] flex flex-col justify-between selection:bg-[#C8A96A] selection:text-[#0D0D0D] transition-colors duration-300 font-sans">
+    <main className="min-h-screen bg-[#FBF9F4] dark:bg-[#0D0D0D] text-[#171513] dark:text-[#FBF9F4] flex flex-col justify-between selection:bg-[#C8A96A] selection:text-[#0D0D0D] transition-colors duration-300 font-sans">
       {/* Top Luxury Navbar */}
-      <header className="border-b border-[#E5DCCB] bg-[#FFFDF8]/80 backdrop-blur-md sticky top-0 z-50 px-6 py-4">
+      <header className="border-b border-[#E5DCCB] dark:border-[#333333] bg-[#FFFDF8]/80 dark:bg-[#0D0D0D]/80 backdrop-blur-md sticky top-0 z-50 px-6 py-4">
         <div className="mx-auto flex w-full max-w-7xl items-center justify-between">
           <Link to="/" className="flex items-center gap-2 group">
             <span className="font-brand text-lg font-bold tracking-[0.25em] text-[#C8A96A] hover:text-[#D8B77A] transition-colors duration-300">
@@ -70,7 +70,7 @@ function Login() {
             <button
               type="button"
               onClick={toggleTheme}
-              className="h-9 w-9 rounded-md border border-[#E5DCCB] bg-[#F7F3EB]/60 text-xs flex items-center justify-center hover:bg-[#E5DCCB] transition cursor-pointer text-[#171513]"
+              className="h-9 w-9 rounded-md border border-[#E5DCCB] dark:border-[#333333] bg-[#F7F3EB]/60 dark:bg-[#1A1A1A]/60 text-xs flex items-center justify-center hover:bg-[#E5DCCB] dark:hover:bg-[#333333] transition cursor-pointer text-[#171513] dark:text-[#FBF9F4]"
               title="Toggle theme"
             >
               {theme === "dark" ? "☀️" : "🌙"}
@@ -78,7 +78,7 @@ function Login() {
 
             <Link
               to="/register"
-              className="text-xs font-sans font-semibold tracking-wider text-[#716B63] hover:text-[#C8A96A] transition-colors duration-300"
+              className="text-xs font-sans font-semibold tracking-wider text-[#716B63] dark:text-[#9A948B] hover:text-[#C8A96A] transition-colors duration-300"
             >
               Don't have an account? <span className="text-[#C8A96A] font-bold underline ml-1 hover:text-[#D8B77A]">Sign Up</span>
             </Link>
@@ -89,21 +89,21 @@ function Login() {
       {/* Split Body Layout */}
       <section className="mx-auto grid w-full max-w-7xl flex-1 items-center gap-12 p-6 lg:grid-cols-12 lg:p-12">
         {/* Left Side: Editorial Banner */}
-        <div className="relative hidden h-full min-h-[520px] overflow-hidden rounded-[18px] border border-[#E5DCCB] lg:block lg:col-span-6">
+        <div className="relative hidden h-full min-h-[520px] overflow-hidden rounded-[18px] border border-[#E5DCCB] dark:border-[#333333] lg:block lg:col-span-6">
           <img
             src={boutiqueBg}
             alt="Boutique Member Authentication"
             className="h-full w-full object-cover brightness-[0.96] contrast-[1.02]"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#FBF9F4] via-[#FBF9F4]/40 to-transparent p-12 flex flex-col justify-end text-left">
-            <span className="font-sans text-[9px] font-bold uppercase tracking-[0.3em] text-[#886D3B] mb-2">
+          <div className="absolute inset-0 bg-gradient-to-t from-[#FBF9F4] dark:from-[#0D0D0D] via-[#FBF9F4]/40 dark:via-[#0D0D0D]/40 to-transparent p-12 flex flex-col justify-end text-left">
+            <span className="font-sans text-[9px] font-bold uppercase tracking-[0.3em] text-[#886D3B] dark:text-[#C8A96A] mb-2">
               RETURNING MEMBER
             </span>
-            <h2 className="font-brand text-4xl lg:text-5xl font-light leading-tight text-[#171513] tracking-wide uppercase">
+            <h2 className="font-brand text-4xl lg:text-5xl font-light leading-tight text-[#171513] dark:text-[#FBF9F4] tracking-wide uppercase">
               Unlock Your <br />
               Style Vault.
             </h2>
-            <p className="mt-4 max-w-md text-xs leading-relaxed text-[#716B63] font-sans font-light tracking-wide">
+            <p className="mt-4 max-w-md text-xs leading-relaxed text-[#716B63] dark:text-[#9A948B] font-sans font-light tracking-wide">
               Sign in to manage your drops, build variants, or explore signature collections.
             </p>
           </div>
@@ -113,13 +113,13 @@ function Login() {
         <div className="lg:col-span-6 flex justify-center w-full">
           <Card className="w-full max-w-lg p-8 space-y-6 hover" hover>
             <div className="text-left">
-              <span className="font-sans text-[9px] font-bold uppercase tracking-[0.3em] text-[#886D3B]">
+              <span className="font-sans text-[9px] font-bold uppercase tracking-[0.3em] text-[#886D3B] dark:text-[#C8A96A]">
                 SIGN IN
               </span>
-              <h1 className="mt-2 font-brand text-3xl font-light text-[#171513] tracking-wide uppercase">
+              <h1 className="mt-2 font-brand text-3xl font-light text-[#171513] dark:text-[#FBF9F4] tracking-wide uppercase">
                 Welcome Back
               </h1>
-              <p className="mt-2 text-xs text-[#716B63] font-sans font-light">
+              <p className="mt-2 text-xs text-[#716B63] dark:text-[#9A948B] font-sans font-light">
                 Please enter your credentials to access your account.
               </p>
             </div>
