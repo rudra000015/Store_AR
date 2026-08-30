@@ -1,71 +1,121 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @layer base {
   :root {
-    --font-brand: 'Cinzel', 'Playfair Display', serif;
-    --font-serif: 'Cormorant Garamond', 'Playfair Display', serif;
-    --font-sans: 'Plus Jakarta Sans', sans-serif;
+    --font-brand: 'Playfair Display', 'Cinzel', serif;
+    --font-serif: 'Playfair Display', serif;
+    --font-sans: 'Poppins', sans-serif;
+
+    /* Editorial Luxury Light Palette */
+    --bg-primary: #FBF9F4;      /* Soft Ivory */
+    --bg-secondary: #F7F3EB;    /* Warm Cream */
+    --bg-card: #FFFDF8;         /* Card Background */
+    --border-color: #E5DCCB;    /* Border */
+    --text-primary: #171513;    /* Primary Text */
+    --text-secondary: #716B63;  /* Secondary Text */
+    --text-muted: #9A948B;      /* Muted Text */
+    --accent-gold: #C8A96A;     /* Luxury Gold */
+    --accent-gold-hover: #D8B77A; /* Hover Gold */
+  }
+
+  .dark {
+    /* Editorial Luxury Dark Palette (Blended with Solid Black instead of Blue) */
+    --bg-primary: #0D0D0D;      /* Primary Black */
+    --bg-secondary: #1A1A1A;    /* Deep Charcoal */
+    --bg-card: #1A1A1A;         /* Deep Charcoal Card */
+    --border-color: #333333;    /* Dark border */
+    --text-primary: #FBF9F4;    /* Soft Ivory */
+    --text-secondary: #9A948B;  /* Muted Text */
+    --text-muted: #716B63;
+    --accent-gold: #C8A96A;     /* Luxury Gold */
+    --accent-gold-hover: #D8B77A; /* Hover Gold */
   }
 
   body {
     font-family: var(--font-sans);
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
   }
 }
 
 .font-brand {
-  font-family: 'Cinzel', 'Playfair Display', serif;
+  font-family: 'Playfair Display', 'Cinzel', serif;
 }
 
 .font-serif {
-  font-family: 'Cormorant Garamond', 'Playfair Display', Georgia, serif;
+  font-family: 'Playfair Display', Georgia, serif;
 }
 
-/* Gold Gradient Classes */
-.gold-btn-gradient {
-  background: linear-gradient(135deg, #d8b15f 0%, #f0cf7c 50%, #c49842 100%);
-  color: #0a0b0e;
+.font-sans {
+  font-family: 'Poppins', sans-serif;
 }
 
-.gold-btn-gradient:hover {
-  filter: brightness(1.08);
+/* Global transitions for theme changes */
+.theme-transition {
+  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
 }
 
-.gold-gradient-text {
-  background: linear-gradient(135deg, #f0cf7c 0%, #d8b15f 50%, #e2be6d 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+/* Luxury Accent Buttons */
+.gold-btn-theme {
+  background: var(--accent-gold);
+  color: #0D0D0D;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Glassmorphism */
-.glass-dark {
-  background: rgba(14, 16, 23, 0.82);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+.gold-btn-theme:hover {
+  background: var(--accent-gold-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(20, 17, 12, 0.06);
 }
 
-.glass-card {
-  background: rgba(18, 20, 28, 0.88);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(216, 177, 95, 0.15);
+/* Secondary Editorial Button */
+.secondary-btn-theme {
+  background: transparent;
+  border: 1px solid #886D3B;
+  color: #171513;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Custom Luxury Scrollbar */
+.secondary-btn-theme:hover {
+  background: var(--accent-gold);
+  color: #0D0D0D;
+  border-color: transparent;
+  transform: translateY(-2px);
+}
+
+/* Glassmorphism Panel */
+.glass-panel {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  transition: background-color 0.3s, border-color 0.3s;
+}
+
+/* Custom Scrollbar */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 5px;
+  height: 5px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #0a0c10;
+  background: var(--bg-primary);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #252936;
+  background: var(--border-color);
   border-radius: 9999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #d8b15f;
+  background: var(--accent-gold);
 }

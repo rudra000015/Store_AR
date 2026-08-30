@@ -1,267 +1,272 @@
-import { useState } from "react"
-import { Link, useNavigate } from "react-router"
-import { useAuth } from "../Hook/useAuth"
-import boutiqueBg from "../../../app/assets/boutique-register-bg.png"
+import { useState } from "react";
+import { Link, useNavigate } from "react-router";
+import { useAuth } from "../Hook/useAuth";
+import { useTheme } from "../../../hooks/useTheme";
+import boutiqueBg from "../../../app/assets/boutique-register-bg.png";
+import Button from "../../../components/ui/Button";
+import Input from "../../../components/ui/Input";
+import Card from "../../../components/ui/Card";
 
 function Register() {
-  const navigate = useNavigate()
-  const { handleRegister } = useAuth()
+  const navigate = useNavigate();
+  const { handleRegister } = useAuth();
+  const { theme, toggleTheme } = useTheme();
   const [formData, setFormData] = useState({
     fullname: "",
     email: "",
     contact: "",
     password: "",
     isSeller: false,
-  })
-  const [showPassword, setShowPassword] = useState(false)
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState("")
+  });
+  const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const handleChange = (e) => {
-    const { name, value, type, checked } = e.target
+    const { name, value, type, checked } = e.target;
     setFormData((prev) => ({
       ...prev,
       [name]: type === "checkbox" ? checked : value,
-    }))
-  }
+    }));
+  };
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
-    setLoading(true)
-    setError("")
+    e.preventDefault();
+    setLoading(true);
+    setError("");
 
     try {
-      const user = await handleRegister(formData)
+      const user = await handleRegister(formData);
       if (user?.role === "Seller") {
-        navigate("/seller")
+        navigate("/seller");
       } else {
-        navigate("/buyer")
+        navigate("/buyer");
       }
     } catch (err) {
       const errorMessage =
         err.response?.data?.msg ||
         err.response?.data?.message ||
         err.message ||
-        "Registration failed. Please try again."
-      setError(errorMessage)
+        "Registration failed. Please try again.";
+      setError(errorMessage);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   return (
-    <main className="min-h-screen bg-[#0a0c10] text-stone-100 flex flex-col justify-between">
-      {/* Top Header */}
-      <header className="border-b border-stone-800/80 bg-[#0f1118]/95 px-6 py-4 backdrop-blur-md">
+    <main className="min-h-screen bg-[#FBF9F4] text-[#171513] flex flex-col justify-between selection:bg-[#C8A96A] selection:text-[#0D0D0D] transition-colors duration-300 font-sans">
+      {/* Top Luxury Navbar */}
+      <header className="border-b border-[#E5DCCB] bg-[#FFFDF8]/80 backdrop-blur-md sticky top-0 z-50 px-6 py-4">
         <div className="mx-auto flex w-full max-w-7xl items-center justify-between">
-          <Link to="/" className="flex items-center gap-2">
-            <span className="font-brand text-lg font-bold tracking-[0.2em] text-[#f0cf7c]">
+          <Link to="/" className="flex items-center gap-2 group">
+            <span className="font-brand text-lg font-bold tracking-[0.25em] text-[#C8A96A] hover:text-[#D8B77A] transition-colors duration-300">
               THE A&R STORE
             </span>
           </Link>
 
-          <Link
-            to="/login"
-            className="text-xs font-semibold text-stone-400 hover:text-[#d8b15f] transition"
-          >
-            Already a member? <span className="text-[#f0cf7c] underline ml-1">Sign In</span>
-          </Link>
+          <div className="flex items-center gap-6">
+            {/* Theme Toggle */}
+            <button
+              type="button"
+              onClick={toggleTheme}
+              className="h-9 w-9 rounded-md border border-[#E5DCCB] bg-[#F7F3EB]/60 text-xs flex items-center justify-center hover:bg-[#E5DCCB] transition cursor-pointer text-[#171513]"
+              title="Toggle theme"
+            >
+              {theme === "dark" ? "☀️" : "🌙"}
+            </button>
+
+            <Link
+              to="/login"
+              className="text-xs font-sans font-semibold tracking-wider text-[#716B63] hover:text-[#C8A96A] transition-colors duration-300"
+            >
+              Already a member? <span className="text-[#C8A96A] font-bold underline ml-1 hover:text-[#D8B77A]">Sign In</span>
+            </Link>
+          </div>
         </div>
       </header>
 
-      {/* Split Layout */}
-      <section className="mx-auto grid w-full max-w-6xl flex-1 items-center gap-10 p-6 lg:grid-cols-2 lg:p-12">
-        {/* Left Side: Editorial */}
-        <div className="relative hidden h-full min-h-[560px] overflow-hidden rounded-3xl border border-stone-800 lg:block">
+      {/* Split Body Layout */}
+      <section className="mx-auto grid w-full max-w-7xl flex-1 items-center gap-12 p-6 lg:grid-cols-12 lg:p-12">
+        {/* Left Side: Editorial Banner */}
+        <div className="relative hidden h-full min-h-[580px] overflow-hidden rounded-[18px] border border-[#E5DCCB] lg:block lg:col-span-6">
           <img
             src={boutiqueBg}
             alt="Boutique Member Registration"
-            className="h-full w-full object-cover"
+            className="h-full w-full object-cover brightness-[0.96] contrast-[1.02]"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent p-10 flex flex-col justify-end">
-            <span className="font-brand text-xs uppercase tracking-[0.25em] text-[#d8b15f]">
-              Join the Movement
+          <div className="absolute inset-0 bg-gradient-to-t from-[#FBF9F4] via-[#FBF9F4]/40 to-transparent p-12 flex flex-col justify-end text-left">
+            <span className="font-sans text-[9px] font-bold uppercase tracking-[0.3em] text-[#886D3B] mb-2">
+              JOIN THE MOVEMENT
             </span>
-            <h2 className="mt-2 font-serif text-4xl font-normal leading-tight text-white">
-              Where Style Meets Identity.
+            <h2 className="font-brand text-4xl lg:text-5xl font-light leading-tight text-[#171513] tracking-wide uppercase">
+              Where Style <br />
+              Meets Identity.
             </h2>
-            <p className="mt-2 text-xs leading-relaxed text-stone-300">
+            <p className="mt-4 max-w-md text-xs leading-relaxed text-[#716B63] font-sans font-light tracking-wide">
               Create an account to shop limited boutique drops, or register as a seller to launch your independent studio.
             </p>
           </div>
         </div>
 
-        {/* Right Side: Register Form */}
-        <div className="mx-auto w-full max-w-md rounded-3xl border border-stone-800/90 bg-[#12141c] p-8 shadow-2xl space-y-6">
-          <div>
-            <span className="font-brand text-xs uppercase tracking-[0.25em] text-[#d8b15f]">
-              Create Account
-            </span>
-            <h1 className="mt-1 font-serif text-3xl font-medium text-white">
-              Become a Member
-            </h1>
-            <p className="mt-1 text-xs text-stone-400">
-              Select your membership role and complete your registration.
-            </p>
-          </div>
-
-          {error && (
-            <div className="rounded-xl border border-rose-500/30 bg-rose-500/10 px-4 py-3 text-xs font-semibold text-rose-400">
-              {error}
+        {/* Right Side: Registration Form Card */}
+        <div className="lg:col-span-6 flex justify-center w-full">
+          <Card className="w-full max-w-lg p-8 space-y-6 hover" hover>
+            <div className="text-left">
+              <span className="font-sans text-[9px] font-bold uppercase tracking-[0.3em] text-[#886D3B]">
+                CREATE ACCOUNT
+              </span>
+              <h1 className="mt-2 font-brand text-3xl font-light text-[#171513] tracking-wide uppercase">
+                Become a Member
+              </h1>
+              <p className="mt-2 text-xs text-[#716B63] font-sans font-light">
+                Select your membership role and complete your registration.
+              </p>
             </div>
-          )}
 
-          {/* Role Selector Pills */}
-          <div className="grid grid-cols-2 gap-3">
-            <button
-              type="button"
-              onClick={() => setFormData((p) => ({ ...p, isSeller: false }))}
-              className={`flex flex-col items-center justify-center rounded-2xl border p-3.5 transition ${
-                !formData.isSeller
-                  ? "border-[#d8b15f] bg-[#d8b15f]/15 text-[#f0cf7c]"
-                  : "border-stone-800 bg-[#0d0e14] text-stone-400 hover:border-stone-700"
-              }`}
-            >
-              <span className="text-xs font-bold uppercase tracking-wider">Buyer</span>
-              <span className="text-[10px] opacity-75">Curated Shopping</span>
-            </button>
+            {error && (
+              <div className="rounded-lg border border-[#A65D52]/20 bg-[#A65D52]/10 px-4 py-3 text-xs font-semibold text-[#A65D52] tracking-wide text-left">
+                ⚠️ {error}
+              </div>
+            )}
 
-            <button
-              type="button"
-              onClick={() => setFormData((p) => ({ ...p, isSeller: true }))}
-              className={`flex flex-col items-center justify-center rounded-2xl border p-3.5 transition ${
-                formData.isSeller
-                  ? "border-[#d8b15f] bg-[#d8b15f]/15 text-[#f0cf7c]"
-                  : "border-stone-800 bg-[#0d0e14] text-stone-400 hover:border-stone-700"
-              }`}
-            >
-              <span className="text-xs font-bold uppercase tracking-wider">Seller Studio</span>
-              <span className="text-[10px] opacity-75">Boutique Listing</span>
-            </button>
-          </div>
+            {/* Role Selector Pills */}
+            <div className="grid grid-cols-2 gap-4">
+              <button
+                type="button"
+                onClick={() => setFormData((p) => ({ ...p, isSeller: false }))}
+                className={`flex flex-col items-center justify-center rounded-xl border p-4 transition-all duration-300 cursor-pointer ${!formData.isSeller
+                    ? "border-[#C8A96A] bg-[#C8A96A]/5 text-[#886D3B]"
+                    : "border-[#E5DCCB] bg-[#FFFDF8] text-[#716B63] hover:border-[#C8A96A]/50"
+                  }`}
+              >
+                <span className="text-xs font-sans font-bold uppercase tracking-wider">Buyer</span>
+                <span className="text-[9px] mt-0.5 uppercase tracking-widest opacity-60">Curated Shopping</span>
+              </button>
 
-          <form onSubmit={handleSubmit} className="space-y-3.5">
-            <div>
-              <label className="block text-[11px] font-bold uppercase tracking-wider text-stone-300">
-                Full Name
-              </label>
-              <input
+              <button
+                type="button"
+                onClick={() => setFormData((p) => ({ ...p, isSeller: true }))}
+                className={`flex flex-col items-center justify-center rounded-xl border p-4 transition-all duration-300 cursor-pointer ${formData.isSeller
+                    ? "border-[#C8A96A] bg-[#C8A96A]/5 text-[#886D3B]"
+                    : "border-[#E5DCCB] bg-[#FFFDF8] text-[#716B63] hover:border-[#C8A96A]/50"
+                  }`}
+              >
+                <span className="text-xs font-sans font-bold uppercase tracking-wider">Seller Studio</span>
+                <span className="text-[9px] mt-0.5 uppercase tracking-widest opacity-60">Boutique Listing</span>
+              </button>
+            </div>
+
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <Input
+                label="Full Name"
+                id="fullname"
                 type="text"
                 name="fullname"
                 required
                 value={formData.fullname}
                 onChange={handleChange}
                 placeholder="Rudra Rathore"
-                className="mt-1.5 h-11 w-full rounded-xl border border-stone-800 bg-[#0d0e14] px-4 text-xs text-stone-100 placeholder:text-stone-600 outline-none transition focus:border-[#d8b15f] focus:ring-1 focus:ring-[#d8b15f]/40"
               />
-            </div>
 
-            <div>
-              <label className="block text-[11px] font-bold uppercase tracking-wider text-stone-300">
-                Email Address
-              </label>
-              <input
+              <Input
+                label="Email Address"
+                id="email"
                 type="email"
                 name="email"
                 required
                 value={formData.email}
                 onChange={handleChange}
                 placeholder="name@example.com"
-                className="mt-1.5 h-11 w-full rounded-xl border border-stone-800 bg-[#0d0e14] px-4 text-xs text-stone-100 placeholder:text-stone-600 outline-none transition focus:border-[#d8b15f] focus:ring-1 focus:ring-[#d8b15f]/40"
               />
-            </div>
 
-            <div>
-              <label className="block text-[11px] font-bold uppercase tracking-wider text-stone-300">
-                Contact Number
-              </label>
-              <input
+              <Input
+                label="Contact Number"
+                id="contact"
                 type="text"
                 name="contact"
                 required
                 value={formData.contact}
                 onChange={handleChange}
                 placeholder="+91 98765 43210"
-                className="mt-1.5 h-11 w-full rounded-xl border border-stone-800 bg-[#0d0e14] px-4 text-xs text-stone-100 placeholder:text-stone-600 outline-none transition focus:border-[#d8b15f] focus:ring-1 focus:ring-[#d8b15f]/40"
               />
-            </div>
 
-            <div>
-              <div className="flex items-center justify-between">
-                <label className="text-[11px] font-bold uppercase tracking-wider text-stone-300">
-                  Password
-                </label>
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="text-[11px] font-semibold text-[#d8b15f] hover:underline"
-                >
-                  {showPassword ? "Hide" : "Show"}
-                </button>
+              <div className="relative text-left">
+                <div className="flex items-center justify-between mb-2">
+                  <label className="block text-[9px] font-sans font-bold uppercase tracking-[0.2em] text-[#716B63]">
+                    Password
+                  </label>
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="text-[9px] font-sans font-bold uppercase tracking-wider text-[#C8A96A] hover:text-[#D8B77A] transition"
+                  >
+                    {showPassword ? "Hide" : "Show"}
+                  </button>
+                </div>
+                <input
+                  type={showPassword ? "text" : "password"}
+                  name="password"
+                  required
+                  value={formData.password}
+                  onChange={handleChange}
+                  placeholder="••••••••"
+                  className="h-10 w-full rounded-lg border border-[#E5DCCB] bg-[#FFFDF8] px-3 text-[11px] text-[#171513] placeholder-[#9A948B] outline-none transition duration-200 focus:border-[#C8A96A] focus:ring-1 focus:ring-[#C8A96A]"
+                />
               </div>
-              <input
-                type={showPassword ? "text" : "password"}
-                name="password"
-                required
-                value={formData.password}
-                onChange={handleChange}
-                placeholder="••••••••"
-                className="mt-1.5 h-11 w-full rounded-xl border border-stone-800 bg-[#0d0e14] px-4 text-xs text-stone-100 placeholder:text-stone-600 outline-none transition focus:border-[#d8b15f] focus:ring-1 focus:ring-[#d8b15f]/40"
-              />
+
+              <Button
+                type="submit"
+                disabled={loading}
+                className="w-full h-11 mt-6"
+              >
+                {loading ? "Creating Account..." : "Create Account"}
+              </Button>
+            </form>
+
+            <div className="space-y-5 pt-2">
+              <div className="relative flex items-center justify-center">
+                <div className="w-full border-t border-[#E5DCCB]" />
+                <span className="absolute bg-[#FFFDF8] px-3 text-[9px] uppercase tracking-[0.25em] text-[#9A948B]">
+                  Or Continue With
+                </span>
+              </div>
+
+              <a
+                href="http://localhost:3000/api/auth/google"
+                className="flex h-11 w-full items-center justify-center gap-3 rounded-full border border-[#E5DCCB] bg-white text-xs font-sans font-semibold text-[#171513] hover:border-[#C8A96A] hover:bg-[#FFFDF8] transition duration-200"
+              >
+                <svg className="h-4 w-4" viewBox="0 0 24 24">
+                  <path
+                    fill="#EA4335"
+                    d="M12 5c1.6 0 3 .6 4.1 1.7l3.1-3.1C17.3 1.8 14.8 1 12 1 7.5 1 3.7 3.6 1.9 7.3l3.7 2.9C6.5 7.3 9 5 12 5z"
+                  />
+                  <path
+                    fill="#4285F4"
+                    d="M23.5 12.3c0-.8-.1-1.6-.2-2.3H12v4.6h6.5c-.3 1.5-1.1 2.8-2.4 3.7l3.7 2.9c2.2-2 3.7-5 3.7-8.9z"
+                  />
+                  <path
+                    fill="#FBBC05"
+                    d="M5.6 14.8c-.2-.7-.4-1.5-.4-2.3s.2-1.6.4-2.3L1.9 7.3C.7 9.7 0 10.8 0 12.5s.7 2.8 1.9 5.2l3.7-2.9z"
+                  />
+                  <path
+                    fill="#34A853"
+                    d="M12 24c3.2 0 6-1.1 8-3l-3.7-2.9c-1.1.7-2.5 1.2-4.3 1.2-3 0-5.5-2.3-6.4-5.2L1.9 17C3.7 20.7 7.5 24 12 24z"
+                  />
+                </svg>
+                <span>Continue with Google</span>
+              </a>
             </div>
-
-            <button
-              type="submit"
-              disabled={loading}
-              className="mt-2 h-11 w-full rounded-xl bg-gradient-to-r from-[#d8b15f] via-[#e5c378] to-[#c49842] text-xs font-bold uppercase tracking-[0.2em] text-black shadow-lg shadow-[#d8b15f]/15 transition hover:opacity-95 disabled:cursor-not-allowed disabled:opacity-50"
-            >
-              {loading ? "Creating Account..." : "Create Account"}
-            </button>
-          </form>
-
-          {/* Alternative Auth */}
-          <div className="space-y-4 pt-2">
-            <div className="relative flex items-center justify-center">
-              <div className="w-full border-t border-stone-800" />
-              <span className="absolute bg-[#12141c] px-3 text-[10px] uppercase tracking-widest text-stone-500">
-                Or Continue With
-              </span>
-            </div>
-
-            <a
-              href="http://localhost:3000/api/auth/google"
-              className="flex h-11 w-full items-center justify-center gap-3 rounded-xl border border-stone-700 bg-[#161922] text-xs font-semibold text-stone-200 hover:border-stone-500 hover:bg-[#1a1e2d] transition"
-            >
-              <svg className="h-4 w-4" viewBox="0 0 24 24">
-                <path
-                  fill="#EA4335"
-                  d="M12 5c1.6 0 3 .6 4.1 1.7l3.1-3.1C17.3 1.8 14.8 1 12 1 7.5 1 3.7 3.6 1.9 7.3l3.7 2.9C6.5 7.3 9 5 12 5z"
-                />
-                <path
-                  fill="#4285F4"
-                  d="M23.5 12.3c0-.8-.1-1.6-.2-2.3H12v4.6h6.5c-.3 1.5-1.1 2.8-2.4 3.7l3.7 2.9c2.2-2 3.7-5 3.7-8.9z"
-                />
-                <path
-                  fill="#FBBC05"
-                  d="M5.6 14.8c-.2-.7-.4-1.5-.4-2.3s.2-1.6.4-2.3L1.9 7.3C.7 9.7 0 10.8 0 12.5s.7 2.8 1.9 5.2l3.7-2.9z"
-                />
-                <path
-                  fill="#34A853"
-                  d="M12 24c3.2 0 6-1.1 8-3l-3.7-2.9c-1.1.7-2.5 1.2-4.3 1.2-3 0-5.5-2.3-6.4-5.2L1.9 17C3.7 20.7 7.5 24 12 24z"
-                />
-              </svg>
-              <span>Continue with Google</span>
-            </a>
-          </div>
+          </Card>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-stone-900 bg-[#08090d] py-4 text-center text-xs text-stone-500">
+      <footer className="border-t border-[#E5DCCB] bg-[#F7F3EB]/50 py-6 text-center text-[9px] font-sans font-bold tracking-wider uppercase text-[#9A948B]">
         © 2026 THE A&R STORE. Handcrafted with luxury standards.
       </footer>
     </main>
-  )
+  );
 }
 
-export default Register
+export default Register;

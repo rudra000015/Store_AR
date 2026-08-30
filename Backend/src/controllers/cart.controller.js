@@ -97,3 +97,77 @@ export const getCart = async (req,res) =>{
         cart
     })
 }
+
+export const updateCartItemQuantity = async (req, res) => {
+    const { productId, variantId } = req.params;
+    const quantity = Number(req.body?.quantity);
+
+    if (isNaN(quantity) || quantity <= 0) {
+        return res.status(400).json({
+            msg: "Quantity must be a positive number",
+            success: false
+        });
+    }
+
+    try {
+        const product = await productModel.findOne({
+            _id: productId,
+            "variants._id": variantId
+        });
+
+        if (!product) {
+            return res.status(404).json({
+                message: "Product or Variant Not Found",
+                success: false
+            });
+        }
+
+        const stock = await stockOfVariant(productId, variantId);
+        if (quantity > stock) {
+            return res.status(400).json({
+                msg: `Only ${stock} items left in stock`,
+                success: false
+            });
+        }
+
+        const cart = await cartModel.findOneAndUpdate(
+            { user: req.user._id, "items.product": productId, "items.variant": variantId },
+            { $set: { "items.$.quantity": quantity } },
+            { new: true }
+        ).populate("items.product");
+
+        return res.status(200).json({
+            msg: "Cart updated successfully",
+            success: true,
+            cart
+        });
+    } catch (error) {
+        return res.status(500).json({
+            message: error.message || "Internal Server Error",
+            success: false
+        });
+    }
+}
+
+export const removeFromCart = async (req, res) => {
+    const { productId, variantId } = req.params;
+    try {
+        const cart = await cartModel.findOneAndUpdate(
+            { user: req.user._id },
+            { $pull: { items: { product: productId, variant: variantId } } },
+            { new: true }
+        ).populate("items.product");
+
+        return res.status(200).json({
+            msg: "Item removed from Cart successfully",
+            success: true,
+            cart
+        });
+    } catch (error) {
+        return res.status(500).json({
+            message: error.message || "Internal Server Error",
+            success: false
+        });
+    }
+}
+

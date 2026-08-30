@@ -1,7 +1,7 @@
 import { useCallback } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { addItems, fetchCart } from "../service/cart.api"
-import { addItems as addcartitems, setItems } from "../state/cart.slice"
+import { addItems, fetchCart, updateCartItemQuantity, removeCartItem } from "../service/cart.api"
+import { addItems as addcartitems, setItems, removeItem, updateItemQuantity } from "../state/cart.slice"
 
 export const useCart = () => {
     const dispatch = useDispatch()
@@ -25,10 +25,42 @@ export const useCart = () => {
         }
     }, [dispatch])
 
+    const handleUpdateCartItemQuantity = useCallback(async function handleUpdateCartItemQuantity({ productId, variantId, quantity }) {
+        try {
+            const data = await updateCartItemQuantity({ productId, variantId, quantity })
+            if (data?.success && data?.cart?.items) {
+                dispatch(setItems(data.cart.items))
+            } else {
+                dispatch(updateItemQuantity({ productId, variantId, quantity }))
+            }
+            return data
+        } catch (error) {
+            console.error("Update quantity failed:", error)
+            throw error
+        }
+    }, [dispatch])
+
+    const handleRemoveFromCart = useCallback(async function handleRemoveFromCart({ productId, variantId }) {
+        try {
+            const data = await removeCartItem({ productId, variantId })
+            if (data?.success && data?.cart?.items) {
+                dispatch(setItems(data.cart.items))
+            } else {
+                dispatch(removeItem({ productId, variantId }))
+            }
+            return data
+        } catch (error) {
+            console.error("Remove from cart failed:", error)
+            throw error
+        }
+    }, [dispatch])
+
     return {
         cartItems,
         handleAddToCart,
         handleaAddToCart: handleAddToCart,
-        handleGetCart
+        handleGetCart,
+        handleUpdateCartItemQuantity,
+        handleRemoveFromCart
     }
 }

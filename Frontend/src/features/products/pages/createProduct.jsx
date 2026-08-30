@@ -1,53 +1,50 @@
-import { useMemo, useState } from "react"
-import { Link, useNavigate } from "react-router"
-import { useProduct } from "../Hook/useProduct"
-import { useAuth } from "../../auth/Hook/useAuth"
-
-const inputClass =
-  "mt-2 h-11 w-full rounded-xl border border-stone-800 bg-[#0d0e14] px-4 text-xs text-stone-100 placeholder:text-stone-600 outline-none transition focus:border-[#d8b15f] focus:ring-1 focus:ring-[#d8b15f]/40"
-
-const textareaClass =
-  "mt-2 min-h-32 w-full resize-none rounded-xl border border-stone-800 bg-[#0d0e14] px-4 py-3 text-xs leading-relaxed text-stone-100 placeholder:text-stone-600 outline-none transition focus:border-[#d8b15f] focus:ring-1 focus:ring-[#d8b15f]/40"
+import { useMemo, useState } from "react";
+import { Link, useNavigate } from "react-router";
+import { useProduct } from "../Hook/useProduct";
+import { useAuth } from "../../auth/Hook/useAuth";
+import { useTheme } from "../../../hooks/useTheme";
+import Button from "../../../components/ui/Button";
+import Input from "../../../components/ui/Input";
+import Card from "../../../components/ui/Card";
 
 function Field({ id, label, children }) {
   return (
-    <div>
-      <label htmlFor={id} className="block text-[11px] font-bold uppercase tracking-[0.16em] text-stone-300">
+    <div className="font-sans">
+      <label htmlFor={id} className="block text-[9px] font-sans font-bold uppercase tracking-[0.2em] text-[#716B63] mb-1.5">
         {label}
       </label>
       {children}
     </div>
-  )
+  );
 }
 
 function CreateProduct() {
-  const navigate = useNavigate()
-  const { handlecreateproduct } = useProduct()
-  const { handleLogout } = useAuth()
+  const navigate = useNavigate();
+  const { handlecreateproduct } = useProduct();
+  const { handleLogout, user } = useAuth();
+  const { theme, toggleTheme } = useTheme();
   const [formData, setFormData] = useState({
     title: "",
     description: "",
     priceAmount: "",
     priceCurrency: "INR",
-  })
-  const [images, setImages] = useState([])
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [isLoggingOut, setIsLoggingOut] = useState(false)
-  const [message, setMessage] = useState("")
-  const [createdProduct, setCreatedProduct] = useState(null)
+  });
+  const [images, setImages] = useState([]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
+  const [message, setMessage] = useState("");
 
   const onLogout = async () => {
     try {
-      setIsLoggingOut(true)
-      await handleLogout()
-      navigate("/login")
+      setIsLoggingOut(true);
+      await handleLogout();
+      navigate("/login");
     } catch (err) {
-      console.error("Logout failed:", err)
+      console.error("Logout failed:", err);
     } finally {
-      setIsLoggingOut(false)
+      setIsLoggingOut(false);
     }
-  }
-
+  };
 
   const previews = useMemo(
     () =>
@@ -56,167 +53,169 @@ function CreateProduct() {
         url: URL.createObjectURL(image),
       })),
     [images]
-  )
+  );
 
   const handleChange = (e) => {
-    const { name, value } = e.target
+    const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
       [name]: value,
-    }))
-  }
+    }));
+  };
 
   const handleImageChange = (e) => {
-    setImages(Array.from(e.target.files || []).slice(0, 7))
-  }
+    setImages(Array.from(e.target.files || []).slice(0, 7));
+  };
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
-    setIsSubmitting(true)
-    setMessage("")
-    setCreatedProduct(null)
+    e.preventDefault();
+    setIsSubmitting(true);
+    setMessage("");
 
-    const payload = new FormData()
-    payload.append("title", formData.title.trim())
-    payload.append("description", formData.description.trim())
-    payload.append("priceAmount", formData.priceAmount)
-    payload.append("priceCurrency", formData.priceCurrency)
-    images.forEach((image) => payload.append("images", image))
+    const payload = new FormData();
+    payload.append("title", formData.title.trim());
+    payload.append("description", formData.description.trim());
+    payload.append("priceAmount", formData.priceAmount);
+    payload.append("priceCurrency", formData.priceCurrency);
+    images.forEach((image) => payload.append("images", image));
 
     try {
-      const product = await handlecreateproduct(payload)
-      setCreatedProduct(product)
-      setMessage("Product published to vault successfully.")
+      const product = await handlecreateproduct(payload);
+      setMessage("Product published to vault successfully.");
       setFormData({
         title: "",
         description: "",
         priceAmount: "",
         priceCurrency: "INR",
-      })
-      setImages([])
-      e.target.reset()
+      });
+      setImages([]);
+      e.target.reset();
       navigate("/seller/viewproduct", {
         state: {
           createdProduct: product,
         },
-      })
+      });
     } catch (error) {
       const errorMessage =
         error.response?.data?.msg ||
         error.response?.data?.errors?.[0]?.msg ||
         error.message ||
-        "Product creation failed."
-      setMessage(errorMessage)
+        "Product creation failed.";
+      setMessage(errorMessage);
     } finally {
-      setIsSubmitting(false)
+      setIsSubmitting(false);
     }
-  }
+  };
 
   return (
-    <main className="min-h-screen bg-[#0a0c10] text-stone-100 pb-16">
+    <main className="min-h-screen bg-[#FBF9F4] text-[#171513] pb-16 selection:bg-[#C8A96A] selection:text-[#0D0D0D] transition-colors duration-300 font-sans">
       {/* Seller Top Navbar */}
-      <header className="border-b border-stone-800/80 bg-[#0f1118]/95 sticky top-0 z-40 backdrop-blur-md">
-        <div className="mx-auto flex h-18 w-full max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
+      <header className="border-b border-[#E5DCCB] bg-[#FFFDF8]/95 sticky top-0 z-40 backdrop-blur-md">
+        <div className="mx-auto flex h-16 w-full max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-8">
-            <Link to="/seller" className="flex items-center gap-2">
-              <span className="font-brand text-lg font-bold tracking-[0.2em] text-[#f0cf7c]">
+            <Link to="/seller" className="flex items-center gap-2 group">
+              <span className="font-brand text-lg font-bold tracking-[0.25em] text-[#C8A96A] hover:text-[#D8B77A] transition duration-300">
                 THE A&R STORE
               </span>
-              <span className="rounded-md border border-[#d8b15f]/30 bg-[#d8b15f]/10 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-[#d8b15f]">
+              <span className="rounded-md border border-[#C8A96A]/20 bg-[#C8A96A]/5 px-2.5 py-0.5 text-[8px] font-bold uppercase tracking-widest text-[#C8A96A]">
                 Studio
               </span>
             </Link>
 
-            <nav className="hidden md:flex items-center gap-6 text-xs font-semibold uppercase tracking-[0.16em] text-stone-400">
-              <Link to="/seller" className="hover:text-stone-200 transition">
+            <nav className="hidden md:flex items-center gap-6 text-[10px] font-sans font-bold uppercase tracking-[0.2em] text-[#716B63]">
+              <Link to="/seller" className="hover:text-[#C8A96A] transition">
                 Dashboard
               </Link>
-              <Link to="/seller/viewproduct" className="hover:text-stone-200 transition">
+              <Link to="/seller/viewproduct" className="hover:text-[#C8A96A] transition">
                 Product Vault
               </Link>
-              <Link to="/seller/createproduct" className="text-[#f0cf7c] transition">
+              <Link to="/seller/createproduct" className="text-[#C8A96A] transition">
                 Add Product
               </Link>
-              <Link to="/buyer" className="hover:text-stone-200 transition">
+              <Link to="/buyer" className="hover:text-[#C8A96A] transition">
                 Storefront
               </Link>
             </nav>
           </div>
 
           <div className="flex items-center gap-3">
+            {/* Theme Toggle */}
+            <button
+              type="button"
+              onClick={toggleTheme}
+              className="h-9 w-9 rounded-md border border-[#E5DCCB] text-xs flex items-center justify-center hover:bg-[#F7F3EB] transition cursor-pointer text-[#171513]"
+              title="Toggle theme"
+            >
+              {theme === "dark" ? "☀️" : "🌙"}
+            </button>
+
             <Link
               to="/seller/viewproduct"
-              className="text-xs font-semibold text-stone-400 hover:text-stone-200 transition"
+              className="text-[9px] font-sans font-bold uppercase tracking-wider text-[#716B63] hover:text-[#C8A96A] transition mr-2"
             >
               ← Back to Vault
             </Link>
 
             <button
-              type="button"
               onClick={onLogout}
               disabled={isLoggingOut}
-              className="inline-flex h-9 items-center gap-1.5 rounded-xl border border-stone-700/80 bg-[#161822] px-3 text-[11px] font-semibold text-stone-300 transition hover:border-red-500/50 hover:bg-red-500/10 hover:text-red-300 disabled:opacity-50"
-              title="Log out"
+              className="h-9 px-4 bg-transparent border border-[#886D3B] text-[#171513] hover:bg-[#C8A96A] hover:text-[#0D0D0D] hover:border-transparent text-[9px] font-sans font-bold uppercase tracking-widest transition rounded-full flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
             >
-              <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <svg className="h-3 w-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                 <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
                 <polyline points="16 17 21 12 16 7" />
                 <line x1="21" y1="12" x2="9" y2="12" />
               </svg>
-              <span className="hidden sm:inline">{isLoggingOut ? "..." : "Logout"}</span>
+              <span>{isLoggingOut ? "..." : "Logout"}</span>
             </button>
           </div>
         </div>
       </header>
 
       {/* Main Container */}
-      <section className="mx-auto grid w-full max-w-7xl gap-8 px-4 pt-8 sm:px-6 lg:grid-cols-[1.1fr_0.9fr] lg:px-8">
+      <section className="mx-auto grid w-full max-w-7xl gap-8 px-4 pt-8 sm:px-6 lg:grid-cols-[1.1fr_0.9fr] lg:px-8 text-left">
         {/* Form Container */}
         <form
           onSubmit={handleSubmit}
-          className="rounded-2xl border border-stone-800/90 bg-[#12141c] p-6 sm:p-8 shadow-xl space-y-6"
+          className="rounded-[18px] border border-[#E5DCCB] bg-[#FFFDF8] p-6 sm:p-8 shadow-[0_10px_30px_rgba(20,17,12,0.03)] space-y-6"
         >
-          <div className="border-b border-stone-800 pb-5">
-            <span className="font-brand text-xs uppercase tracking-[0.25em] text-[#d8b15f]">
-              Publish New Drop
+          <div className="border-b border-[#E5DCCB]/60 pb-5">
+            <span className="font-sans text-[9px] font-bold uppercase tracking-[0.3em] text-[#886D3B]">
+              PUBLISH NEW DROP
             </span>
-            <h1 className="mt-1 font-serif text-3xl text-white font-medium">
+            <h1 className="mt-2 font-brand text-3xl text-[#171513] font-light tracking-wide uppercase">
               Add a Product
             </h1>
-            <p className="mt-1 text-xs text-stone-400">
+            <p className="mt-2 text-xs text-[#716B63] font-sans font-light">
               Publish a base product to your vault. You can attach sizes & colors in the Variant Ledger next.
             </p>
           </div>
 
-          <div className="space-y-4">
-            <Field id="title" label="Product Title">
-              <input
-                id="title"
-                name="title"
-                type="text"
-                value={formData.title}
-                onChange={handleChange}
-                className={inputClass}
-                placeholder="e.g. Oversized Heavyweight Cotton T-Shirt"
-                required
-              />
-            </Field>
+          <div className="space-y-5">
+            <Input
+              label="Product Title"
+              id="title"
+              name="title"
+              type="text"
+              value={formData.title}
+              onChange={handleChange}
+              placeholder="e.g. Oversized Heavyweight Cotton T-Shirt"
+              required
+            />
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <Field id="priceAmount" label="Base Price">
-                <input
-                  id="priceAmount"
-                  name="priceAmount"
-                  type="number"
-                  min="0"
-                  step="0.01"
-                  value={formData.priceAmount}
-                  onChange={handleChange}
-                  className={inputClass}
-                  placeholder="899"
-                  required
-                />
-              </Field>
+              <Input
+                label="Base Price"
+                id="priceAmount"
+                name="priceAmount"
+                type="number"
+                min="0"
+                step="0.01"
+                value={formData.priceAmount}
+                onChange={handleChange}
+                placeholder="899"
+                required
+              />
 
               <Field id="priceCurrency" label="Currency">
                 <select
@@ -224,7 +223,7 @@ function CreateProduct() {
                   name="priceCurrency"
                   value={formData.priceCurrency}
                   onChange={handleChange}
-                  className={inputClass}
+                  className="h-10 w-full rounded-lg border border-[#E5DCCB] bg-[#FFFDF8] px-4 text-xs text-[#171513] placeholder-[#9A948B] outline-none transition duration-200 focus:border-[#C8A96A] focus:ring-1 focus:ring-[#C8A96A] cursor-pointer"
                   required
                 >
                   <option value="INR">INR (₹)</option>
@@ -242,7 +241,7 @@ function CreateProduct() {
                 name="description"
                 value={formData.description}
                 onChange={handleChange}
-                className={textareaClass}
+                className="mt-2 min-h-32 w-full resize-none rounded-lg border border-[#E5DCCB] bg-[#FFFDF8] px-4 py-3 text-xs leading-relaxed text-[#171513] placeholder-[#9A948B] outline-none transition duration-200 focus:border-[#C8A96A] focus:ring-1 focus:ring-[#C8A96A]"
                 placeholder="Describe tailoring details, fabric GSM, fit, silhouette, and care guidelines..."
                 required
               />
@@ -251,21 +250,21 @@ function CreateProduct() {
             <Field id="images" label="Product Imagery (Up to 7)">
               <label
                 htmlFor="images"
-                className="mt-2 flex min-h-36 cursor-pointer flex-col items-center justify-center rounded-xl border border-dashed border-stone-700 bg-[#0d0e14] px-4 py-6 text-center transition hover:border-[#d8b15f]/60 hover:bg-[#d8b15f]/5"
+                className="mt-2 flex min-h-36 cursor-pointer flex-col items-center justify-center rounded-xl border border-dashed border-[#E5DCCB] bg-[#F7F3EB]/30 px-4 py-6 text-center transition hover:border-[#C8A96A]/60 hover:bg-[#F7F3EB]/60"
               >
-                <div className="h-10 w-10 rounded-full border border-[#d8b15f]/40 bg-[#d8b15f]/10 flex items-center justify-center text-[#f0cf7c] mb-2">
+                <div className="h-10 w-10 rounded-full border border-[#C8A96A]/20 bg-[#C8A96A]/10 flex items-center justify-center text-[#C8A96A] mb-2">
                   <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                     <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
                     <polyline points="17 8 12 3 7 8" />
                     <line x1="12" y1="3" x2="12" y2="15" />
                   </svg>
                 </div>
-                <span className="text-xs font-semibold text-stone-200">
+                <span className="text-xs font-sans font-bold text-[#171513] uppercase tracking-wider">
                   {images.length > 0
                     ? `${images.length} image(s) selected`
                     : "Drag images here or browse files"}
                 </span>
-                <span className="mt-1 text-[11px] text-stone-500">
+                <span className="mt-1 text-[10px] uppercase tracking-wider text-[#9A948B]">
                   High-resolution PNG, JPG, or WEBP. Max 7 images.
                 </span>
               </label>
@@ -283,38 +282,37 @@ function CreateProduct() {
 
           {message && (
             <div
-              className={`rounded-xl px-4 py-3 text-xs font-semibold ${
-                message.includes("success")
-                  ? "border border-emerald-500/30 bg-emerald-500/10 text-emerald-400"
-                  : "border border-rose-500/30 bg-rose-500/10 text-rose-400"
-              }`}
+              className={`rounded-lg px-4 py-3 text-xs font-semibold ${message.includes("successfully")
+                  ? "bg-[#66745A]/10 border border-[#66745A]/20 text-[#66745A]"
+                  : "bg-[#A65D52]/10 border border-[#A65D52]/20 text-[#A65D52]"
+                }`}
             >
               {message}
             </div>
           )}
 
-          <div className="pt-3 border-t border-stone-800 flex items-center justify-end gap-3">
+          <div className="pt-4 border-t border-[#E5DCCB]/60 flex items-center justify-end gap-4">
             <button
-              type="reset"
+              type="button"
               onClick={() => {
                 setFormData({
                   title: "",
                   description: "",
                   priceAmount: "",
                   priceCurrency: "INR",
-                })
-                setImages([])
-                setMessage("")
-                setCreatedProduct(null)
+                });
+                setImages([]);
+                setMessage("");
               }}
-              className="h-11 rounded-xl border border-stone-700 bg-[#161922] px-5 text-xs font-bold uppercase tracking-wider text-stone-300 hover:border-stone-600 transition"
+              className="h-11 px-6 border border-[#886D3B] text-[#171513] hover:bg-[#C8A96A] hover:text-[#0D0D0D] hover:border-transparent text-[10px] font-sans font-bold uppercase tracking-widest transition rounded-full cursor-pointer"
             >
               Reset
             </button>
+            
             <button
               type="submit"
               disabled={isSubmitting}
-              className="h-11 rounded-xl bg-gradient-to-r from-[#d8b15f] via-[#e5c378] to-[#c49842] px-7 text-xs font-bold uppercase tracking-[0.2em] text-black shadow-lg shadow-[#d8b15f]/20 transition hover:opacity-95 disabled:cursor-not-allowed disabled:opacity-50"
+              className="h-11 px-8 bg-[#C8A96A] text-[#0D0D0D] hover:bg-[#D8B77A] text-[10px] font-sans font-bold uppercase tracking-[0.12em] transition rounded-full cursor-pointer disabled:opacity-50"
             >
               {isSubmitting ? "Publishing..." : "Add to Vault"}
             </button>
@@ -322,68 +320,70 @@ function CreateProduct() {
         </form>
 
         {/* Live Preview Column */}
-        <aside className="rounded-2xl border border-stone-800/90 bg-[#12141c] p-6 sm:p-7 shadow-xl space-y-5 h-fit">
-          <div>
-            <span className="font-brand text-xs uppercase tracking-[0.25em] text-[#d8b15f]">
-              Live Storefront Preview
-            </span>
-            <h2 className="font-serif text-2xl text-white font-medium mt-1">
-              Store Listing Card
-            </h2>
-          </div>
+        <aside className="h-fit">
+          <Card className="p-6 border border-[#E5DCCB] bg-[#FFFDF8] space-y-5 hover" hover>
+            <div>
+              <span className="font-sans text-[9px] font-bold uppercase tracking-[0.25em] text-[#886D3B]">
+                LIVE STOREFRONT PREVIEW
+              </span>
+              <h2 className="font-brand text-2xl text-[#171513] font-light mt-1 tracking-wide uppercase">
+                Store Listing Card
+              </h2>
+            </div>
 
-          <div className="overflow-hidden rounded-2xl border border-stone-800 bg-[#0d0e14]">
-            <div className="aspect-[4/5] bg-stone-900 overflow-hidden relative">
-              {previews[0] ? (
-                <img
-                  src={previews[0].url}
-                  alt={previews[0].name}
-                  className="h-full w-full object-cover"
-                />
-              ) : (
-                <div className="flex h-full items-center justify-center px-6 text-center text-xs text-stone-600">
-                  Image preview will render here
+            <div className="overflow-hidden rounded-2xl border border-[#E5DCCB] bg-[#FFFDF8] shadow-sm">
+              <div className="aspect-[4/5] bg-[#F2EFE8] overflow-hidden relative">
+                {previews[0] ? (
+                  <img
+                    src={previews[0].url}
+                    alt={previews[0].name}
+                    className="h-full w-full object-cover"
+                  />
+                ) : (
+                  <div className="flex h-full items-center justify-center px-6 text-center text-[9px] text-[#716B63] uppercase tracking-widest font-bold bg-[#F2EFE8]">
+                    Image preview will render here
+                  </div>
+                )}
+                <div className="absolute left-3 top-3">
+                  <span className="rounded-full border border-[#E5DCCB]/40 bg-[#FFFDF8]/90 px-2.5 py-0.5 text-[8px] font-sans font-bold uppercase tracking-wider text-[#171513]">
+                    Preview
+                  </span>
                 </div>
-              )}
-              <div className="absolute left-3 top-3">
-                <span className="rounded-full border border-white/20 bg-black/70 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white">
-                  Preview
-                </span>
+              </div>
+
+              <div className="p-5 space-y-2">
+                <h3 className="font-brand text-[15px] font-semibold text-[#171513] tracking-wide line-clamp-1">
+                  {formData.title || "Your Product Title"}
+                </h3>
+                <p className="text-sm font-sans font-bold text-[#886D3B]">
+                  {formData.priceAmount
+                    ? `${formData.priceCurrency} ${formData.priceAmount}`
+                    : "INR 0.00"}
+                </p>
+                <p className="line-clamp-3 text-xs leading-relaxed text-[#716B63] font-sans font-light">
+                  {formData.description ||
+                    "Your product description and silhouette notes will render here."}
+                </p>
               </div>
             </div>
 
-            <div className="p-4 space-y-2">
-              <h3 className="font-serif text-base font-semibold text-white line-clamp-1">
-                {formData.title || "Your Product Title"}
-              </h3>
-              <p className="text-sm font-bold text-[#f0cf7c]">
-                {formData.priceAmount
-                  ? `${formData.priceCurrency} ${formData.priceAmount}`
-                  : "INR 0.00"}
-              </p>
-              <p className="line-clamp-3 text-xs leading-5 text-stone-400">
-                {formData.description ||
-                  "Your product description and silhouette notes will render here."}
-              </p>
-            </div>
-          </div>
-
-          {previews.length > 1 && (
-            <div className="grid grid-cols-4 gap-2">
-              {previews.slice(1).map((image) => (
-                <img
-                  key={image.url}
-                  src={image.url}
-                  alt={image.name}
-                  className="aspect-square rounded-xl border border-stone-800 object-cover"
-                />
-              ))}
-            </div>
-          )}
+            {previews.length > 1 && (
+              <div className="grid grid-cols-4 gap-2">
+                {previews.slice(1).map((image) => (
+                  <img
+                    key={image.url}
+                    src={image.url}
+                    alt={image.name}
+                    className="aspect-square rounded-xl border border-[#E5DCCB] object-cover"
+                  />
+                ))}
+              </div>
+            )}
+          </Card>
         </aside>
       </section>
     </main>
-  )
+  );
 }
 
-export default CreateProduct
+export default CreateProduct;

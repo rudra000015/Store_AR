@@ -9,6 +9,8 @@ import Protected from '../features/auth/components/Protected'
 import RoleRedirect from '../features/auth/components/RoleRedirect'
 import ProductDetail from '../features/auth/components/ProductDetail'
 import SellerProductDetail from '../features/auth/components/SellerProductDetail'
+import Cart from '../features/cart/pages/Cart'
+import AppLayout from '../components/layout/AppLayout'
 
 export const routes = createBrowserRouter([
   {
@@ -18,7 +20,11 @@ export const routes = createBrowserRouter([
 
   {
     path: '/buyer',
-    element: <Protected role='Buyer' />,
+    element: (
+      <Protected role='Buyer'>
+        <AppLayout />
+      </Protected>
+    ),
     children: [
       {
         index: true,
@@ -27,6 +33,10 @@ export const routes = createBrowserRouter([
       {
         path: 'product/:id',
         element: <ProductDetail />,
+      },
+      {
+        path: 'cart',
+        element: <Cart />,
       },
     ],
   },
